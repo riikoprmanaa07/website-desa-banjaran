@@ -1,142 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Print Surat</title>
+    <meta charset="utf-8">
     <style>
-        body {
-            font-family: "Times New Roman", serif;
-            margin: 40px;
-        }
-
-        .kop {
-            text-align: center;
-        }
-
-        .kop img {
-            width: 80px;
-            position: absolute;
-            left: 40px;
-            top: 40px;
-        }
-
-        .line {
-            border-bottom: 3px solid black;
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }
-
-        .content {
-            margin-top: 20px;
-        }
-
-        table {
-            margin-top: 10px;
-        }
-
-        .ttd {
-            width: 100%;
-            margin-top: 60px;
-        }
-
-        .ttd-kanan {
-            text-align: right;
-        }
-
-        .cap {
-            margin-top: -80px;
-            margin-left: 50px;
-            opacity: 0.7;
-        }
-
+        body  { font-family: "Times New Roman", serif; font-size: 12pt; margin: 50px; }
+        .kop  { text-align: center; border-bottom: 3px solid black; padding-bottom: 10px; margin-bottom: 20px; }
+        .kop h2 { margin: 0; font-size: 15pt; text-transform: uppercase; letter-spacing: 1px; }
+        .kop h3 { margin: 4px 0 0; font-size: 12pt; }
+        .kop p  { margin: 2px 0; font-size: 10pt; }
+        .judul  { text-align: center; margin: 24px 0 4px; font-size: 14pt; font-weight: bold;
+                  text-decoration: underline; text-transform: uppercase; }
+        .nomor  { text-align: center; margin-bottom: 20px; font-size: 11pt; }
+        .pembuka { margin-bottom: 16px; line-height: 1.8; text-align: justify; }
+        .isi    { white-space: pre-line; line-height: 2; margin-bottom: 16px; }
+        .penutup { line-height: 1.8; text-align: justify; margin-bottom: 20px; }
+        .ttd    { margin-top: 50px; float: right; text-align: center; width: 260px; }
+        .ttd .garis { margin-top: 80px; border-top: 1px solid black; padding-top: 4px; }
+        .ttd p  { margin: 2px 0; }
+        .clear  { clear: both; }
     </style>
 </head>
-<body onload="window.print()">
+<body>
 
-    <!-- ================== KOP SURAT ================== -->
+    {{-- KOP SURAT --}}
     <div class="kop">
-        {{-- Logo Desa --}}
-        <img src="{{ asset('images/logo-jepara.png') }}" alt="Logo Desa">
-
-        <h2>PEMERINTAH DESA BANJARAN</h2>
-        <h4>KECAMATAN XXXXX KABUPATEN XXXXX</h4>
-        <p>Jl. Raya Desa No. 1, Banjaran</p>
-        <p>Telp: 0812-XXXX-XXXX</p>
+        {!! nl2br(e($template->kop_surat)) !!}
     </div>
 
-    <div class="line"></div>
+    {{-- JUDUL --}}
+    <div class="judul">{{ $template->judul_surat }}</div>
+    <div class="nomor">Nomor: {{ $surat->nomor_surat }}</div>
 
-    <!-- ================== NOMOR & TANGGAL ================== -->
-    <p><strong>Nomor :</strong> {{ $surat->nomor_surat }}</p>
-    <p><strong>Tanggal :</strong> 
-        {{ \Carbon\Carbon::parse($surat->tanggal_surat)->translatedFormat('d F Y') }}
-    </p>
-    <p><strong>Perihal :</strong> {{ $surat->jenis_surat }}</p>
+    {{-- PEMBUKA --}}
+    <div class="pembuka">{{ $template->pembuka }}</div>
 
-    <br>
+    {{-- ISI SURAT (placeholder sudah di-replace) --}}
+    <div class="isi">{{ $isiSurat }}</div>
 
-    <!-- ================== PENERIMA ================== -->
-    <p>Yth.</p>
-    <p><strong>{{ $surat->penduduk->nama }}</strong></p>
-    <p>Di Tempat</p>
+    {{-- PENUTUP --}}
+    @if($template->penutup)
+        <div class="penutup">{{ $template->penutup }}</div>
+    @endif
 
-    <br>
-
-    <!-- ================== ISI SURAT ================== -->
-    <div class="content">
-        <p>Dengan hormat,</p>
-
-        <p>
-            Berdasarkan permohonan yang bersangkutan, Pemerintah Desa Banjaran 
-            dengan ini menerangkan bahwa:
-        </p>
-
-        <table>
-            <tr>
-                <td width="150">Nama</td>
-                <td>: {{ $surat->penduduk->nama }}</td>
-            </tr>
-            <tr>
-                <td>NIK</td>
-                <td>: {{ $surat->penduduk->nik }}</td>
-            </tr>
-            <tr>
-                <td>Alamat</td>
-                <td>: {{ $surat->penduduk->alamat }}</td>
-            </tr>
-        </table>
-
-        <br>
-
-        <p>
-            Surat ini dibuat untuk keperluan:
-            <strong>{{ $surat->keperluan }}</strong>.
-        </p>
-
-        <p>
-            Demikian surat ini dibuat dengan sebenarnya agar dapat digunakan sebagaimana mestinya.
-        </p>
+    {{-- TANDA TANGAN --}}
+    <div class="ttd">
+        <p>Banjaran, {{ $surat->tanggal_surat->format('d F Y') }}</p>
+        <p>{{ $template->penandatangan_jabatan }},</p>
+        <div class="garis">
+            <strong>{{ $template->penandatangan_nama }}</strong>
+            @if($template->penandatangan_nip)
+                <p style="font-size:10pt;">NIP. {{ $template->penandatangan_nip }}</p>
+            @endif
+        </div>
     </div>
-
-    <!-- ================== PENUTUP ================== -->
-    <br><br>
-
-    <table class="ttd">
-        <tr>
-            <td></td>
-            <td class="ttd-kanan">
-                Banjaran, {{ \Carbon\Carbon::parse($surat->tanggal_surat)->translatedFormat('d F Y') }}
-                <br><br>
-                <strong>{{ $surat->penandatangan }}</strong>
-                <br>
-                Kepala Desa Banjaran
-            </td>
-        </tr>
-    </table>
-
-    <!-- ================== CAP DESA ================== -->
-    <div class="cap">
-        <img src="{{ asset('images/cap-desa.png') }}" width="120">
-    </div>
+    <div class="clear"></div>
 
 </body>
 </html>

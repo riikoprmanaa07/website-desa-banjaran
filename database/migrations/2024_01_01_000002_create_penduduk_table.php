@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('agama');
             $table->string('status_perkawinan');
             $table->string('pekerjaan');
+            $table->string('pendidikan');
             $table->string('kewarganegaraan')->default('WNI');
             $table->string('no_kk', 16)->nullable();
             $table->enum('status_dalam_keluarga', ['Kepala Keluarga', 'Istri', 'Anak', 'Orang Tua', 'Lainnya'])->nullable();

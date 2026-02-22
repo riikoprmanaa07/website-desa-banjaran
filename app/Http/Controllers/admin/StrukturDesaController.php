@@ -11,14 +11,13 @@ class StrukturDesaController extends Controller
 {
     public function index()
     {
-        $struktur = StrukturDesa::orderBy('urutan')->paginate(20);
+        $struktur = StrukturDesa::orderBy('urutan')->get(); // ⭐ Ubah dari paginate ke get untuk drag & drop
         return view('admin.struktur.index', compact('struktur'));
     }
 
     public function create()
     {
-        $maxUrutan = StrukturDesa::max('urutan') ?? 0;
-        return view('admin.struktur.create', compact('maxUrutan'));
+        return view('admin.struktur.create');
     }
 
     public function store(Request $request)
@@ -27,15 +26,21 @@ class StrukturDesaController extends Controller
             'jabatan' => 'required|string|max:255',
             'nama' => 'required|string|max:255',
             'nip' => 'nullable|string|max:50',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'urutan' => 'required|integer|min:0',
-            'status' => 'required|in:Aktif,Tidak Aktif',
+            'foto' => 'required|image|mimes:jpeg,png,jpg|max:2048', // ⭐ Ubah jadi required
+            'pendidikan' => 'nullable|string',  // ⭐ Tambahkan ini
+            'no_hp' => 'nullable|string|max:20', // ⭐ Tambahkan ini
         ]);
 
         // Upload foto
         if ($request->hasFile('foto')) {
             $validated['foto'] = $request->file('foto')->store('struktur', 'public');
         }
+
+        // ⭐ Auto set urutan (max + 1)
+        $validated['urutan'] = (StrukturDesa::max('urutan') ?? 0) + 1;
+        
+        // ⭐ Auto set status Aktif
+        $validated['status'] = 'Aktif';
 
         StrukturDesa::create($validated);
 
@@ -58,8 +63,9 @@ class StrukturDesaController extends Controller
             'nama' => 'required|string|max:255',
             'nip' => 'nullable|string|max:50',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'urutan' => 'required|integer|min:0',
-            'status' => 'required|in:Aktif,Tidak Aktif',
+            'pendidikan' => 'nullable|string',  // ⭐ Tambahkan ini
+            'no_hp' => 'nullable|string|max:20', // ⭐ Tambahkan ini
+            'urutan' => 'nullable|integer|min:0', // ⭐ Ubah jadi nullable
         ]);
 
         // Upload foto baru
@@ -95,16 +101,16 @@ class StrukturDesaController extends Controller
     public function reorder(Request $request)
     {
         $request->validate([
-            'orders' => 'required|array',
-            'orders.*.id' => 'required|exists:struktur_desa,id',
-            'orders.*.urutan' => 'required|integer|min:0',
+            'order' => 'required|array',  // ⭐ Ubah dari 'orders' ke 'order'
+            'order.*.id' => 'required|exists:struktur_desa,id',
+            'order.*.urutan' => 'required|integer|min:1',
         ]);
 
-        foreach ($request->orders as $order) {
-            StrukturDesa::where('id', $order['id'])
-                ->update(['urutan' => $order['urutan']]);
+        foreach ($request->order as $item) {
+            StrukturDesa::where('id', $item['id'])
+                ->update(['urutan' => $item['urutan']]);
         }
 
-        return response()->json(['message' => 'Urutan berhasil diupdate']);
+        return response()->json(['success' => true]);
     }
 }

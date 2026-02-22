@@ -20,35 +20,39 @@
         </a>
     </div>
 
+    <!-- Notifikasi -->
+    @if(session('success'))
+    <div class="mx-6 mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+        {{ session('success') }}
+    </div>
+    @endif
+
     <!-- Search & Filter -->
     <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
         <form action="{{ route('admin.surat.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <!-- Search -->
+            <!-- Search — ✅ PERBAIKAN: placeholder diperjelas -->
             <div class="md:col-span-2">
-                <input type="text" name="search" value="{{ request('search') }}" 
-                    placeholder="Cari nomor surat, jenis, atau nama pemohon..." 
+                <input type="text" name="search" value="{{ request('search') }}"
+                    placeholder="Cari nomor surat, nama, atau NIK..."
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold focus:border-transparent">
             </div>
 
             <!-- Filter Status -->
             <select name="status" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold">
                 <option value="">Semua Status</option>
-                <option value="Pending" {{ request('status') == 'Pending' ? 'selected' : '' }}>Pending</option>
+                <option value="Pending"  {{ request('status') == 'Pending'  ? 'selected' : '' }}>Pending</option>
                 <option value="Diproses" {{ request('status') == 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                <option value="Selesai" {{ request('status') == 'Selesai' ? 'selected' : '' }}>Selesai</option>
-                <option value="Ditolak" {{ request('status') == 'Ditolak' ? 'selected' : '' }}>Ditolak</option>
+                <option value="Selesai"  {{ request('status') == 'Selesai'  ? 'selected' : '' }}>Selesai</option>
+                <option value="Ditolak"  {{ request('status') == 'Ditolak'  ? 'selected' : '' }}>Ditolak</option>
             </select>
 
             <!-- Filter Jenis -->
             <select name="jenis" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold">
                 <option value="">Semua Jenis</option>
-                <option value="Surat Keterangan" {{ request('jenis') == 'Surat Keterangan' ? 'selected' : '' }}>Surat Keterangan</option>
-                <option value="Surat Domisili" {{ request('jenis') == 'Surat Domisili' ? 'selected' : '' }}>Surat Domisili</option>
-                <option value="Surat Pengantar" {{ request('jenis') == 'Surat Pengantar' ? 'selected' : '' }}>Surat Pengantar</option>
-                <option value="SKCK" {{ request('jenis') == 'SKCK' ? 'selected' : '' }}>SKCK</option>
-                <option value="Surat Kematian" {{ request('jenis') == 'Surat Kematian' ? 'selected' : '' }}>Surat Kematian</option>
-                <option value="Surat Kelahiran" {{ request('jenis') == 'Surat Kelahiran' ? 'selected' : '' }}>Surat Kelahiran</option>
-                <option value="Lainnya" {{ request('jenis') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                <option value="Surat Keterangan Domisili"    {{ request('jenis') == 'Surat Keterangan Domisili'    ? 'selected' : '' }}>Surat Keterangan Domisili</option>
+                <option value="Surat Keterangan Usaha"       {{ request('jenis') == 'Surat Keterangan Usaha'       ? 'selected' : '' }}>Surat Keterangan Usaha</option>
+                <option value="Surat Pengantar Nikah"        {{ request('jenis') == 'Surat Pengantar Nikah'        ? 'selected' : '' }}>Surat Pengantar Nikah</option>
+                <option value="Surat Keterangan Tidak Mampu" {{ request('jenis') == 'Surat Keterangan Tidak Mampu' ? 'selected' : '' }}>Surat Keterangan Tidak Mampu</option>
             </select>
 
             <!-- Buttons -->
@@ -65,22 +69,22 @@
         </form>
     </div>
 
-    <!-- Statistics Cards -->
+    <!-- ✅ PERBAIKAN: Statistics Cards pakai $stats dari controller, bukan dari paginated collection -->
     <div class="px-6 py-4 bg-gray-50 border-b grid grid-cols-4 gap-4">
         <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-center">
-            <p class="text-2xl font-bold text-yellow-800">{{ $surat->where('status', 'Pending')->count() }}</p>
+            <p class="text-2xl font-bold text-yellow-800">{{ $stats['pending'] }}</p>
             <p class="text-xs text-yellow-600">Pending</p>
         </div>
         <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 text-center">
-            <p class="text-2xl font-bold text-blue-800">{{ $surat->where('status', 'Diproses')->count() }}</p>
+            <p class="text-2xl font-bold text-blue-800">{{ $stats['diproses'] }}</p>
             <p class="text-xs text-blue-600">Diproses</p>
         </div>
         <div class="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
-            <p class="text-2xl font-bold text-green-800">{{ $surat->where('status', 'Selesai')->count() }}</p>
+            <p class="text-2xl font-bold text-green-800">{{ $stats['selesai'] }}</p>
             <p class="text-xs text-green-600">Selesai</p>
         </div>
         <div class="bg-red-50 border border-red-200 rounded-lg p-3 text-center">
-            <p class="text-2xl font-bold text-red-800">{{ $surat->where('status', 'Ditolak')->count() }}</p>
+            <p class="text-2xl font-bold text-red-800">{{ $stats['ditolak'] }}</p>
             <p class="text-xs text-red-600">Ditolak</p>
         </div>
     </div>
@@ -117,18 +121,19 @@
                         {{ $item->tanggal_surat->format('d/m/Y') }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                            {{ $item->status == 'Pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                            {{ $item->status == 'Diproses' ? 'bg-blue-100 text-blue-800' : '' }}
-                            {{ $item->status == 'Selesai' ? 'bg-green-100 text-green-800' : '' }}
-                            {{ $item->status == 'Ditolak' ? 'bg-red-100 text-red-800' : '' }}">
+                        <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
+                            {{ $item->status == 'Pending'  ? 'bg-yellow-100 text-yellow-800' : '' }}
+                            {{ $item->status == 'Diproses' ? 'bg-blue-100 text-blue-800'    : '' }}
+                            {{ $item->status == 'Selesai'  ? 'bg-green-100 text-green-800'  : '' }}
+                            {{ $item->status == 'Ditolak'  ? 'bg-red-100 text-red-800'      : '' }}">
                             {{ $item->status }}
                         </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div class="flex items-center justify-end space-x-2">
+
                             <!-- Quick Status Update -->
-                            @if($item->status != 'Selesai' && $item->status != 'Ditolak')
+                            @if(!in_array($item->status, ['Selesai', 'Ditolak']))
                             <div class="relative group">
                                 <button class="text-purple-600 hover:text-purple-900" title="Update Status">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,11 +144,21 @@
                                     <form action="{{ route('admin.surat.update-status', $item->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" name="status" value="Diproses" class="block w-full text-left px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">Diproses</button>
-                                        <button type="submit" name="status" value="Selesai" class="block w-full text-left px-4 py-2 text-sm text-green-600 hover:bg-green-50">Selesai</button>
-                                        <button type="submit" name="status" value="Ditolak" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Ditolak</button>
+                                        <button type="submit" name="status" value="Selesai"  class="block w-full text-left px-4 py-2 text-sm text-green-600 hover:bg-green-50">Selesai</button>
+                                        <button type="submit" name="status" value="Ditolak"  class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Ditolak</button>
                                     </form>
                                 </div>
                             </div>
+                            @endif
+
+                            <!-- ✅ TAMBAHAN: Tombol cetak langsung dari list jika sudah Selesai -->
+                            @if($item->status == 'Selesai')
+                            <a href="{{ route('admin.surat.print', $item->id) }}"
+                               class="text-green-600 hover:text-green-900" title="Cetak PDF">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                                </svg>
+                            </a>
                             @endif
 
                             <!-- View -->
@@ -162,7 +177,7 @@
                             </a>
 
                             <!-- Delete -->
-                            <form action="{{ route('admin.surat.destroy', $item->id) }}" method="POST" class="inline" 
+                            <form action="{{ route('admin.surat.destroy', $item->id) }}" method="POST" class="inline"
                                 onsubmit="return confirm('Yakin ingin menghapus surat {{ $item->nomor_surat }}?\n\nData yang sudah dihapus tidak dapat dikembalikan!')">
                                 @csrf
                                 @method('DELETE')
@@ -195,7 +210,7 @@
     <!-- Pagination -->
     @if($surat->hasPages())
     <div class="px-6 py-4 border-t border-gray-200">
-        {{ $surat->links() }}
+        {{ $surat->appends(request()->query())->links() }} {{-- ✅ PERBAIKAN: appends agar filter tidak hilang saat pindah halaman --}}
     </div>
     @endif
 </div>

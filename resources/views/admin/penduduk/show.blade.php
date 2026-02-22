@@ -128,6 +128,11 @@
                         <p class="font-semibold text-gray-800">{{ $penduduk->pekerjaan }}</p>
                     </div>
 
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <label class="text-sm text-gray-500 block mb-1">Pendidikan Terakhir</label>
+                        <p class="font-semibold text-gray-800">{{ $penduduk->pendidikan }}</p>
+                    </div>
+
                     @if($penduduk->no_kk)
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <label class="text-sm text-gray-500 block mb-1">No. Kartu Keluarga</label>

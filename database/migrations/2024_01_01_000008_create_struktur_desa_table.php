@@ -13,6 +13,8 @@ return new class extends Migration
             $table->string('jabatan');
             $table->string('nama');
             $table->string('nip')->nullable();
+           $table->string('pendidikan')->nullable();
+            $table->string('no_hp', 20)->nullable();
             $table->string('foto')->nullable();
             $table->integer('urutan')->default(0);
             $table->enum('status', ['Aktif', 'Tidak Aktif'])->default('Aktif');

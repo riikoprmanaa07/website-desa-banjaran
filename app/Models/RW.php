@@ -29,9 +29,9 @@ class RW extends Model
 
     // Relationships
     public function rt()
-    {
-        return $this->hasMany(RT::class);
-    }
+{
+    return $this->hasMany(RT::class, 'rw_id', 'id');
+}
 
     // Methods
     public function updateStatistik()

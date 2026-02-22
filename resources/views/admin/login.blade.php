@@ -36,7 +36,7 @@
     <div class="w-full max-w-md">
         <!-- Logo -->
         <div class="text-center mb-8">
-            <img src="{{ asset('images/logo-jepara.jpg') }}" alt="Logo" class="w-20 h-20 mx-auto mb-4">
+            <img src="{{ asset('images/logo-jepara.png') }}" alt="Logo" class="w-20 h-20 mx-auto mb-4">
             <h1 class="text-3xl font-bold text-white mb-2">Admin Panel</h1>
             <p class="text-gray-300">Desa Banjaran - Kab. Jepara</p>
         </div>

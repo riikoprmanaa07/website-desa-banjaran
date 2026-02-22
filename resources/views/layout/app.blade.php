@@ -81,6 +81,10 @@
                         Berita
                         <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-desa-gold transition-all duration-300 group-hover:w-full"></span>
                     </a>
+                    <a href="{{ route('galeri') }}" class="text-sm font-medium text-gray-300 hover:text-white transition relative py-2 group">
+                        Galeri
+                        <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-desa-gold transition-all duration-300 group-hover:w-full"></span>
+                    </a>
                     <a href="{{ route('services') }}" class="text-sm font-medium text-gray-300 hover:text-white transition relative py-2 group">
                         Layanan
                         <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-desa-gold transition-all duration-300 group-hover:w-full"></span>
@@ -145,7 +149,30 @@
                     </ul>
                 </div>
 
-               
+                <div>
+                    <h4 class="text-white text-lg font-bold mb-6 uppercase tracking-wider text-xs">Kontak & Lokasi</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-4 h-4 text-desa-gold flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            <span class="leading-relaxed">Desa Banjaran, Kec. Bangsri,<br>Kab. Jepara, Jawa Tengah 59453</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-4 h-4 text-desa-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            <span>(0291) 123456</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-4 h-4 text-desa-gold flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <span>desabanjaran@jepara.go.id</span>
+                        </li>
+                        <li class="pt-2">
+                            <a href="https://www.google.com/maps/search/Desa+Banjaran+Bangsri+Jepara" target="_blank" rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 text-desa-gold hover:text-yellow-400 transition text-xs font-bold uppercase tracking-wide">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                Lihat di Google Maps
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
                 <div>
                     <h4 class="text-white text-lg font-bold mb-6 uppercase tracking-wider text-xs">Jam Pelayanan</h4>

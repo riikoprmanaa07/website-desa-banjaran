@@ -15,354 +15,180 @@
 <!-- Data Desa Content -->
 <section class="py-16 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         <!-- Quick Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-desa-gold hover:shadow-xl transition transform hover:-translate-y-1">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm font-medium">Total Penduduk</p>
-                        <h3 class="text-3xl font-bold text-desa-dark mt-1">{{ number_format($demografi['total_penduduk']) }}</h3>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+            <div class="bg-white rounded-2xl shadow-md p-5 border-t-4 border-desa-gold hover:shadow-lg transition hover:-translate-y-1">
+                <p class="text-gray-500 text-xs font-semibold uppercase tracking-wide">Total Penduduk</p>
+                <h3 class="text-3xl font-extrabold text-desa-dark mt-1">{{ number_format($demografi['total_penduduk']) }}</h3>
+                <p class="text-xs text-gray-400 mt-1">jiwa</p>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-5 border-t-4 border-blue-500 hover:shadow-lg transition hover:-translate-y-1">
+                <p class="text-gray-500 text-xs font-semibold uppercase tracking-wide">Laki-laki</p>
+                <h3 class="text-3xl font-extrabold text-desa-dark mt-1">{{ number_format($demografi['laki_laki']) }}</h3>
+                <p class="text-xs text-gray-400 mt-1">jiwa</p>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-5 border-t-4 border-pink-500 hover:shadow-lg transition hover:-translate-y-1">
+                <p class="text-gray-500 text-xs font-semibold uppercase tracking-wide">Perempuan</p>
+                <h3 class="text-3xl font-extrabold text-desa-dark mt-1">{{ number_format($demografi['perempuan']) }}</h3>
+                <p class="text-xs text-gray-400 mt-1">jiwa</p>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md p-5 border-t-4 border-green-500 hover:shadow-lg transition hover:-translate-y-1">
+                <p class="text-gray-500 text-xs font-semibold uppercase tracking-wide">Kepala Keluarga</p>
+                <h3 class="text-3xl font-extrabold text-desa-dark mt-1">{{ number_format($demografi['kepala_keluarga']) }}</h3>
+                <p class="text-xs text-gray-400 mt-1">KK</p>
+            </div>
+        </div>
+
+        <!-- Row 1: Jenis Kelamin (Donut) + Usia (Bar) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+
+            <!-- Diagram Jenis Kelamin -->
+            <div class="bg-white rounded-2xl shadow-md p-6">
+                <h2 class="text-lg font-extrabold text-desa-dark mb-1">👥 Komposisi Jenis Kelamin</h2>
+                <p class="text-xs text-gray-400 mb-4">Perbandingan penduduk laki-laki dan perempuan</p>
+                <div class="flex items-center justify-center gap-8">
+                    <div class="relative w-44 h-44 flex-shrink-0">
+                        <canvas id="chartGender"></canvas>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                            <span class="text-xl font-extrabold text-desa-dark">{{ number_format($demografi['total_penduduk']) }}</span>
+                            <span class="text-xs text-gray-400">Total</span>
+                        </div>
                     </div>
-                    <div class="bg-desa-gold/10 rounded-full p-4">
-                        <svg class="w-8 h-8 text-desa-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0"></span>
+                            <span class="text-gray-600">Laki-laki</span>
+                            <span class="ml-2 font-bold text-gray-800">{{ number_format($demografi['laki_laki']) }}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-pink-400 flex-shrink-0"></span>
+                            <span class="text-gray-600">Perempuan</span>
+                            <span class="ml-2 font-bold text-gray-800">{{ number_format($demografi['perempuan']) }}</span>
+                        </div>
+                        <div class="pt-2 border-t border-gray-100 text-xs text-gray-400">
+                            Kepadatan: {{ $demografi['kepadatan'] }}
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-blue-500 hover:shadow-xl transition transform hover:-translate-y-1">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm font-medium">Laki-laki</p>
-                        <h3 class="text-3xl font-bold text-desa-dark mt-1">{{ number_format($demografi['laki_laki']) }}</h3>
-                    </div>
-                    <div class="bg-blue-50 rounded-full p-4">
-                        <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-pink-500 hover:shadow-xl transition transform hover:-translate-y-1">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm font-medium">Perempuan</p>
-                        <h3 class="text-3xl font-bold text-desa-dark mt-1">{{ number_format($demografi['perempuan']) }}</h3>
-                    </div>
-                    <div class="bg-pink-50 rounded-full p-4">
-                        <svg class="w-8 h-8 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow-lg p-6 border-t-4 border-green-500 hover:shadow-xl transition transform hover:-translate-y-1">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-600 text-sm font-medium">Kepala Keluarga</p>
-                        <h3 class="text-3xl font-bold text-desa-dark mt-1">{{ number_format($demografi['kepala_keluarga']) }}</h3>
-                    </div>
-                    <div class="bg-green-50 rounded-full p-4">
-                        <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                    </div>
+            <!-- Diagram Usia -->
+            <div class="bg-white rounded-2xl shadow-md p-6">
+                <h2 class="text-lg font-extrabold text-desa-dark mb-1">👶 Kelompok Usia</h2>
+                <p class="text-xs text-gray-400 mb-4">Distribusi penduduk berdasarkan kelompok usia</p>
+                <div class="h-48">
+                    <canvas id="chartUsia"></canvas>
                 </div>
             </div>
         </div>
 
-        <!-- Data Demografi -->
-        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-2xl font-bold text-desa-dark mb-6 pb-4 border-b-2 border-desa-gold font-serif">📊 Data Demografi</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-gradient-to-br from-gray-50 to-white p-5 rounded-lg border-l-4 border-desa-gold">
-                    <p class="text-gray-600 font-medium">Total Penduduk</p>
-                    <p class="text-2xl font-bold text-desa-dark">{{ number_format($demografi['total_penduduk']) }} jiwa</p>
+        <!-- Row 2: Pendidikan + Pekerjaan -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+
+            <!-- Diagram Pendidikan -->
+            <div class="bg-white rounded-2xl shadow-md p-6">
+                <h2 class="text-lg font-extrabold text-desa-dark mb-1">🎓 Tingkat Pendidikan</h2>
+                <p class="text-xs text-gray-400 mb-4">Jumlah penduduk berdasarkan jenjang pendidikan</p>
+                <div class="h-52">
+                    <canvas id="chartPendidikan"></canvas>
                 </div>
-                <div class="bg-gradient-to-br from-gray-50 to-white p-5 rounded-lg border-l-4 border-blue-500">
-                    <p class="text-gray-600 font-medium">Laki-laki</p>
-                    <p class="text-2xl font-bold text-desa-dark">{{ number_format($demografi['laki_laki']) }} jiwa</p>
-                </div>
-                <div class="bg-gradient-to-br from-gray-50 to-white p-5 rounded-lg border-l-4 border-pink-500">
-                    <p class="text-gray-600 font-medium">Perempuan</p>
-                    <p class="text-2xl font-bold text-desa-dark">{{ number_format($demografi['perempuan']) }} jiwa</p>
-                </div>
-                <div class="bg-gradient-to-br from-gray-50 to-white p-5 rounded-lg border-l-4 border-green-500">
-                    <p class="text-gray-600 font-medium">Kepala Keluarga</p>
-                    <p class="text-2xl font-bold text-desa-dark">{{ number_format($demografi['kepala_keluarga']) }} KK</p>
-                </div>
-                <div class="bg-gradient-to-br from-gray-50 to-white p-5 rounded-lg border-l-4 border-purple-500">
-                    <p class="text-gray-600 font-medium">Kepadatan Penduduk</p>
-                    <p class="text-2xl font-bold text-desa-dark">{{ $demografi['kepadatan'] }}</p>
-                </div>
-                <div class="bg-gradient-to-br from-gray-50 to-white p-5 rounded-lg border-l-4 border-orange-500">
-                    <p class="text-gray-600 font-medium">Rasio Jenis Kelamin</p>
-                    <p class="text-2xl font-bold text-desa-dark">{{ number_format(($demografi['laki_laki'] / $demografi['perempuan']) * 100, 1) }}</p>
+            </div>
+
+            <!-- Diagram Pekerjaan -->
+            <div class="bg-white rounded-2xl shadow-md p-6">
+                <h2 class="text-lg font-extrabold text-desa-dark mb-1">💼 Mata Pencaharian</h2>
+                <p class="text-xs text-gray-400 mb-4">Distribusi pekerjaan utama penduduk</p>
+                <div class="h-52">
+                    <canvas id="chartPekerjaan"></canvas>
                 </div>
             </div>
         </div>
 
-        <!-- Data Usia -->
-        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-2xl font-bold text-desa-dark mb-6 pb-4 border-b-2 border-desa-gold font-serif">👶 Data Penduduk Berdasarkan Usia</h2>
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-desa-dark">
-                        <tr>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Kelompok Usia</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Laki-laki</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Perempuan</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Total</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Persentase</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach($usia as $item)
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item['range'] }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ number_format($item['laki']) }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ number_format($item['perempuan']) }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-desa-dark">{{ number_format($item['total']) }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center space-x-3">
-                                    <div class="flex-1 bg-gray-200 rounded-full h-2 max-w-xs">
-                                        <div class="bg-desa-gold rounded-full h-2 transition-all duration-500" style="width: {{ ($item['total'] / $demografi['total_penduduk']) * 100 }}%"></div>
-                                    </div>
-                                    <span class="text-sm font-semibold text-gray-700">{{ number_format(($item['total'] / $demografi['total_penduduk']) * 100, 1) }}%</span>
-                                </div>
-                            </td>
-                        </tr>
+        <!-- Row 3: Agama + Perkawinan -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+
+            <!-- Diagram Agama -->
+            <div class="bg-white rounded-2xl shadow-md p-6">
+                <h2 class="text-lg font-extrabold text-desa-dark mb-1">🕌 Data Agama</h2>
+                <p class="text-xs text-gray-400 mb-4">Komposisi agama yang dianut penduduk</p>
+                <div class="flex items-center gap-6">
+                    <div class="w-40 h-40 flex-shrink-0">
+                        <canvas id="chartAgama"></canvas>
+                    </div>
+                    <div class="space-y-2 text-xs flex-1">
+                        @php $agamaColors = ['#d4af37','#3b82f6','#22c55e','#a855f7','#f97316','#ec4899']; @endphp
+                        @foreach($agama as $i => $item)
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:{{ $agamaColors[$i % count($agamaColors)] }}"></span>
+                            <span class="text-gray-600 flex-1">{{ $item['nama'] }}</span>
+                            <span class="font-bold text-gray-700">{{ $item['persentase'] }}%</span>
+                        </div>
                         @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Data Pendidikan -->
-        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-2xl font-bold text-desa-dark mb-6 pb-4 border-b-2 border-desa-gold font-serif">🎓 Data Pendidikan</h2>
-            <div class="space-y-4">
-                @foreach($pendidikan as $item)
-                <div class="border-l-4 border-blue-500 bg-gray-50 p-4 rounded-r-lg hover:shadow-md transition">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="font-semibold text-gray-800">{{ $item['tingkat'] }}</span>
-                        <span class="text-sm font-bold text-blue-600">{{ number_format($item['jumlah']) }} orang</span>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <div class="flex-1 bg-gray-200 rounded-full h-3">
-                            <div class="bg-gradient-to-r from-blue-500 to-blue-400 rounded-full h-3 transition-all duration-500" style="width: {{ $item['persentase'] * 4 }}%"></div>
-                        </div>
-                        <span class="text-sm font-semibold text-gray-700 w-12">{{ $item['persentase'] }}%</span>
                     </div>
                 </div>
-                @endforeach
-            </div>
-        </div>
-
-        <!-- Data Pekerjaan -->
-        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-2xl font-bold text-desa-dark mb-6 pb-4 border-b-2 border-desa-gold font-serif">💼 Data Mata Pencaharian</h2>
-            <div class="space-y-4">
-                @foreach($pekerjaan as $item)
-                <div class="border-l-4 border-green-500 bg-gray-50 p-4 rounded-r-lg hover:shadow-md transition">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="font-semibold text-gray-800">{{ $item['jenis'] }}</span>
-                        <span class="text-sm font-bold text-green-600">{{ number_format($item['jumlah']) }} orang</span>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <div class="flex-1 bg-gray-200 rounded-full h-3">
-                            <div class="bg-gradient-to-r from-green-500 to-green-400 rounded-full h-3 transition-all duration-500" style="width: {{ $item['persentase'] * 3.5 }}%"></div>
-                        </div>
-                        <span class="text-sm font-semibold text-gray-700 w-12">{{ $item['persentase'] }}%</span>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-
-        <!-- Data Agama & Perkawinan -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <!-- Data Agama -->
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-desa-dark mb-6 pb-4 border-b-2 border-desa-gold font-serif">🕌 Data Agama</h2>
-                <div class="space-y-4">
-                    @foreach($agama as $item)
-                    <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-semibold text-gray-800">{{ $item['nama'] }}</span>
-                            <span class="text-sm font-bold text-desa-gold">{{ number_format($item['jumlah']) }} ({{ $item['persentase'] }}%)</span>
-                        </div>
-                        <div class="bg-gray-200 rounded-full h-3">
-                            <div class="bg-desa-gold rounded-full h-3 transition-all duration-500" style="width: {{ $item['persentase'] }}%"></div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
             </div>
 
-            <!-- Data Perkawinan -->
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-desa-dark mb-6 pb-4 border-b-2 border-desa-gold font-serif">💑 Data Status Perkawinan</h2>
-                <div class="space-y-4">
-                    @foreach($perkawinan as $item)
-                    <div class="bg-gray-50 p-4 rounded-lg hover:shadow-md transition">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-semibold text-gray-800">{{ $item['status'] }}</span>
-                            <span class="text-sm font-bold text-purple-600">{{ number_format($item['jumlah']) }} ({{ $item['persentase'] }}%)</span>
-                        </div>
-                        <div class="bg-gray-200 rounded-full h-3">
-                            <div class="bg-gradient-to-r from-purple-500 to-purple-400 rounded-full h-3 transition-all duration-500" style="width: {{ $item['persentase'] * 1.8 }}%"></div>
-                        </div>
+            <!-- Diagram Perkawinan -->
+            <div class="bg-white rounded-2xl shadow-md p-6">
+                <h2 class="text-lg font-extrabold text-desa-dark mb-1">💑 Status Perkawinan</h2>
+                <p class="text-xs text-gray-400 mb-4">Komposisi status perkawinan penduduk</p>
+                <div class="flex items-center gap-6">
+                    <div class="w-40 h-40 flex-shrink-0">
+                        <canvas id="chartPerkawinan"></canvas>
                     </div>
-                    @endforeach
+                    <div class="space-y-2 text-xs flex-1">
+                        @php $kawinColors = ['#8b5cf6','#6366f1','#a78bfa','#c4b5fd']; @endphp
+                        @foreach($perkawinan as $i => $item)
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:{{ $kawinColors[$i % count($kawinColors)] }}"></span>
+                            <span class="text-gray-600 flex-1">{{ $item['status'] }}</span>
+                            <span class="font-bold text-gray-700">{{ $item['persentase'] }}%</span>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Fasilitas Umum -->
-        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-2xl font-bold text-desa-dark mb-6 pb-4 border-b-2 border-desa-gold font-serif">🏢 Fasilitas Umum</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Pendidikan -->
-                <div class="bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg border border-blue-100">
-                    <h3 class="text-lg font-bold text-blue-600 mb-4 flex items-center">
-                        <span class="mr-2">🎓</span> Pendidikan
-                    </h3>
-                    @foreach($fasilitas['pendidikan'] as $item)
-                    <div class="flex justify-between items-center py-2 border-b border-blue-100 last:border-0">
-                        <span class="text-gray-700 text-sm">{{ $item['nama'] }}</span>
-                        <span class="font-bold text-blue-600 bg-blue-100 px-3 py-1 rounded-full text-xs">{{ $item['jumlah'] }}</span>
-                    </div>
-                    @endforeach
-                </div>
-
-                <!-- Kesehatan -->
-                <div class="bg-gradient-to-br from-green-50 to-white p-6 rounded-lg border border-green-100">
-                    <h3 class="text-lg font-bold text-green-600 mb-4 flex items-center">
-                        <span class="mr-2">🏥</span> Kesehatan
-                    </h3>
-                    @foreach($fasilitas['kesehatan'] as $item)
-                    <div class="flex justify-between items-center py-2 border-b border-green-100 last:border-0">
-                        <span class="text-gray-700 text-sm">{{ $item['nama'] }}</span>
-                        <span class="font-bold text-green-600 bg-green-100 px-3 py-1 rounded-full text-xs">{{ $item['jumlah'] }}</span>
-                    </div>
-                    @endforeach
-                </div>
-
-                <!-- Peribadatan -->
-                <div class="bg-gradient-to-br from-purple-50 to-white p-6 rounded-lg border border-purple-100">
-                    <h3 class="text-lg font-bold text-purple-600 mb-4 flex items-center">
-                        <span class="mr-2">🕌</span> Peribadatan
-                    </h3>
-                    @foreach($fasilitas['peribadatan'] as $item)
-                    <div class="flex justify-between items-center py-2 border-b border-purple-100 last:border-0">
-                        <span class="text-gray-700 text-sm">{{ $item['nama'] }}</span>
-                        <span class="font-bold text-purple-600 bg-purple-100 px-3 py-1 rounded-full text-xs">{{ $item['jumlah'] }}</span>
-                    </div>
-                    @endforeach
-                </div>
-
-                <!-- Ekonomi -->
-                <div class="bg-gradient-to-br from-orange-50 to-white p-6 rounded-lg border border-orange-100">
-                    <h3 class="text-lg font-bold text-orange-600 mb-4 flex items-center">
-                        <span class="mr-2">🏪</span> Ekonomi
-                    </h3>
-                    @foreach($fasilitas['ekonomi'] as $item)
-                    <div class="flex justify-between items-center py-2 border-b border-orange-100 last:border-0">
-                        <span class="text-gray-700 text-sm">{{ $item['nama'] }}</span>
-                        <span class="font-bold text-orange-600 bg-orange-100 px-3 py-1 rounded-full text-xs">{{ $item['jumlah'] }}</span>
-                    </div>
-                    @endforeach
-                </div>
+        <!-- Row 4: Fasilitas Umum -->
+        <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
+            <h2 class="text-lg font-extrabold text-desa-dark mb-1">🏢 Fasilitas Umum</h2>
+            <p class="text-xs text-gray-400 mb-4">Jumlah fasilitas berdasarkan kategori</p>
+            <div class="h-52">
+                <canvas id="chartFasilitas"></canvas>
             </div>
         </div>
 
-        <!-- Potensi Desa -->
-        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <h2 class="text-2xl font-bold text-desa-dark mb-6 pb-4 border-b-2 border-desa-gold font-serif">🌾 Potensi Desa</h2>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Pertanian -->
-                <div class="bg-gradient-to-br from-green-50 to-white p-6 rounded-lg border border-green-100">
-                    <h3 class="text-lg font-bold text-green-600 mb-4">🌾 Pertanian</h3>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full text-sm">
-                            <thead class="bg-green-100">
-                                <tr>
-                                    <th class="px-3 py-2 text-left text-xs font-semibold text-green-700">Komoditas</th>
-                                    <th class="px-3 py-2 text-left text-xs font-semibold text-green-700">Luas</th>
-                                    <th class="px-3 py-2 text-left text-xs font-semibold text-green-700">Produksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-green-100">
-                                @foreach($potensi['pertanian'] as $item)
-                                <tr class="hover:bg-green-50">
-                                    <td class="px-3 py-2 text-gray-700">{{ $item['komoditas'] }}</td>
-                                    <td class="px-3 py-2 text-gray-600">{{ $item['luas'] }}</td>
-                                    <td class="px-3 py-2 text-gray-600">{{ $item['produksi'] }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+        <!-- Row 5: Potensi Desa -->
+        <div class="bg-white rounded-2xl shadow-md p-6 mb-6">
+            <h2 class="text-lg font-extrabold text-desa-dark mb-1">🌾 Potensi Desa</h2>
+            <p class="text-xs text-gray-400 mb-5">Pertanian, Perkebunan, dan Peternakan</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <h3 class="text-sm font-bold text-green-600 mb-3">🌾 Pertanian <span class="text-gray-400 font-normal">(luas ha)</span></h3>
+                    <div class="h-40"><canvas id="chartPertanian"></canvas></div>
                 </div>
-
-                <!-- Perkebunan -->
-                <div class="bg-gradient-to-br from-yellow-50 to-white p-6 rounded-lg border border-yellow-100">
-                    <h3 class="text-lg font-bold text-yellow-600 mb-4">🌴 Perkebunan</h3>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full text-sm">
-                            <thead class="bg-yellow-100">
-                                <tr>
-                                    <th class="px-3 py-2 text-left text-xs font-semibold text-yellow-700">Komoditas</th>
-                                    <th class="px-3 py-2 text-left text-xs font-semibold text-yellow-700">Luas</th>
-                                    <th class="px-3 py-2 text-left text-xs font-semibold text-yellow-700">Produksi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-yellow-100">
-                                @foreach($potensi['perkebunan'] as $item)
-                                <tr class="hover:bg-yellow-50">
-                                    <td class="px-3 py-2 text-gray-700">{{ $item['komoditas'] }}</td>
-                                    <td class="px-3 py-2 text-gray-600">{{ $item['luas'] }}</td>
-                                    <td class="px-3 py-2 text-gray-600">{{ $item['produksi'] }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                <div>
+                    <h3 class="text-sm font-bold text-yellow-600 mb-3">🌴 Perkebunan <span class="text-gray-400 font-normal">(luas ha)</span></h3>
+                    <div class="h-40"><canvas id="chartPerkebunan"></canvas></div>
                 </div>
-
-                <!-- Peternakan -->
-                <div class="bg-gradient-to-br from-red-50 to-white p-6 rounded-lg border border-red-100">
-                    <h3 class="text-lg font-bold text-red-600 mb-4">🐄 Peternakan</h3>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full text-sm">
-                            <thead class="bg-red-100">
-                                <tr>
-                                    <th class="px-3 py-2 text-left text-xs font-semibold text-red-700">Jenis Ternak</th>
-                                    <th class="px-3 py-2 text-left text-xs font-semibold text-red-700">Populasi</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-red-100">
-                                @foreach($potensi['peternakan'] as $item)
-                                <tr class="hover:bg-red-50">
-                                    <td class="px-3 py-2 text-gray-700">{{ $item['jenis'] }}</td>
-                                    <td class="px-3 py-2 text-gray-600">{{ $item['populasi'] }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                <div>
+                    <h3 class="text-sm font-bold text-red-600 mb-3">🐄 Peternakan <span class="text-gray-400 font-normal">(populasi)</span></h3>
+                    <div class="h-40"><canvas id="chartPeternakan"></canvas></div>
                 </div>
             </div>
         </div>
 
         <!-- Note -->
-        <div class="bg-gradient-to-r from-desa-gold/10 to-yellow-50 border-l-4 border-desa-gold rounded-r-lg p-6">
-            <div class="flex items-start">
-                <svg class="w-6 h-6 text-desa-gold mt-1 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="bg-gradient-to-r from-desa-gold/10 to-yellow-50 border-l-4 border-desa-gold rounded-r-lg p-5">
+            <div class="flex items-start gap-3">
+                <svg class="w-5 h-5 text-desa-gold mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 <div>
-                    <p class="font-semibold text-gray-800 mb-1">Catatan Penting</p>
-                    <p class="text-gray-700 text-sm leading-relaxed">Data yang ditampilkan adalah data tahun 2026. Untuk informasi lebih detail atau data terkini, silakan hubungi kantor desa atau kunjungi langsung.</p>
+                    <p class="font-semibold text-gray-800 mb-1 text-sm">Catatan Penting</p>
+                    <p class="text-gray-600 text-xs leading-relaxed">Data yang ditampilkan adalah data tahun 2026. Untuk informasi lebih detail atau data terkini, silakan hubungi kantor desa atau kunjungi langsung.</p>
                 </div>
             </div>
         </div>
@@ -370,3 +196,238 @@
     </div>
 </section>
 @endsection
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    Chart.defaults.font.family = "'Inter', sans-serif";
+
+    // ── 1. Jenis Kelamin – Donut ──────────────────────────────
+    new Chart(document.getElementById('chartGender'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Laki-laki', 'Perempuan'],
+            datasets: [{
+                data: [{{ $demografi['laki_laki'] }}, {{ $demografi['perempuan'] }}],
+                backgroundColor: ['#3b82f6', '#f472b6'],
+                borderWidth: 0,
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            cutout: '72%',
+            plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: (c) => ` ${c.label}: ${c.formattedValue} jiwa` } }
+            }
+        }
+    });
+
+    // ── 2. Usia – Grouped Bar ──────────────────────────────────
+    new Chart(document.getElementById('chartUsia'), {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode(array_column($usia, 'range')) !!},
+            datasets: [
+                { label: 'Laki-laki', data: {!! json_encode(array_column($usia, 'laki')) !!}, backgroundColor: '#3b82f6', borderRadius: 3 },
+                { label: 'Perempuan', data: {!! json_encode(array_column($usia, 'perempuan')) !!}, backgroundColor: '#f472b6', borderRadius: 3 }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 10, font: { size: 10 } } } },
+            scales: {
+                x: { grid: { display: false }, ticks: { font: { size: 9 } } },
+                y: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 9 } } }
+            }
+        }
+    });
+
+    // ── 3. Pendidikan – Horizontal Bar ────────────────────────
+    new Chart(document.getElementById('chartPendidikan'), {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode(array_column($pendidikan, 'tingkat')) !!},
+            datasets: [{
+                data: {!! json_encode(array_column($pendidikan, 'jumlah')) !!},
+                backgroundColor: '#3b82f6',
+                borderRadius: 4,
+                barThickness: 13
+            }]
+        },
+        options: {
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` ${c.formattedValue} orang` } } },
+            scales: {
+                x: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 9 } } },
+                y: { grid: { display: false }, ticks: { font: { size: 9 } } }
+            }
+        }
+    });
+
+    // ── 4. Pekerjaan – Horizontal Bar ─────────────────────────
+    new Chart(document.getElementById('chartPekerjaan'), {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode(array_column($pekerjaan, 'jenis')) !!},
+            datasets: [{
+                data: {!! json_encode(array_column($pekerjaan, 'jumlah')) !!},
+                backgroundColor: '#22c55e',
+                borderRadius: 4,
+                barThickness: 13
+            }]
+        },
+        options: {
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` ${c.formattedValue} orang` } } },
+            scales: {
+                x: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 9 } } },
+                y: { grid: { display: false }, ticks: { font: { size: 9 } } }
+            }
+        }
+    });
+
+    // ── 5. Agama – Donut ──────────────────────────────────────
+    new Chart(document.getElementById('chartAgama'), {
+        type: 'doughnut',
+        data: {
+            labels: {!! json_encode(array_column($agama, 'nama')) !!},
+            datasets: [{
+                data: {!! json_encode(array_column($agama, 'jumlah')) !!},
+                backgroundColor: ['#d4af37','#3b82f6','#22c55e','#a855f7','#f97316','#ec4899'],
+                borderWidth: 0,
+                hoverOffset: 5
+            }]
+        },
+        options: {
+            cutout: '65%',
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` ${c.label}: ${c.formattedValue} jiwa` } } }
+        }
+    });
+
+    // ── 6. Perkawinan – Donut ─────────────────────────────────
+    new Chart(document.getElementById('chartPerkawinan'), {
+        type: 'doughnut',
+        data: {
+            labels: {!! json_encode(array_column($perkawinan, 'status')) !!},
+            datasets: [{
+                data: {!! json_encode(array_column($perkawinan, 'jumlah')) !!},
+                backgroundColor: ['#8b5cf6','#6366f1','#a78bfa','#c4b5fd'],
+                borderWidth: 0,
+                hoverOffset: 5
+            }]
+        },
+        options: {
+            cutout: '65%',
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` ${c.label}: ${c.formattedValue} jiwa` } } }
+        }
+    });
+
+    // ── 7. Fasilitas – Horizontal Bar ─────────────────────────
+    @php
+        $fasilitasLabels = [];
+        $fasilitasData   = [];
+        $fasilitasBg     = [];
+        $colorMap = [
+            'pendidikan'  => '#3b82f6',
+            'kesehatan'   => '#22c55e',
+            'peribadatan' => '#a855f7',
+            'ekonomi'     => '#f97316',
+        ];
+        foreach ($fasilitas as $kategori => $items) {
+            foreach ($items as $item) {
+                $fasilitasLabels[] = $item['nama'];
+                $fasilitasData[]   = $item['jumlah'];
+                $fasilitasBg[]     = $colorMap[$kategori] ?? '#d4af37';
+            }
+        }
+    @endphp
+    new Chart(document.getElementById('chartFasilitas'), {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode($fasilitasLabels) !!},
+            datasets: [{
+                data: {!! json_encode($fasilitasData) !!},
+                backgroundColor: {!! json_encode($fasilitasBg) !!},
+                borderRadius: 5,
+                barThickness: 16
+            }]
+        },
+        options: {
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` ${c.formattedValue} unit` } } },
+            scales: {
+                x: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 9 }, stepSize: 1 } },
+                y: { grid: { display: false }, ticks: { font: { size: 9 } } }
+            }
+        }
+    });
+
+    // ── 8. Pertanian ──────────────────────────────────────────
+    new Chart(document.getElementById('chartPertanian'), {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode(array_column($potensi['pertanian'], 'komoditas')) !!},
+            datasets: [{
+                data: {!! json_encode(array_map(fn($i) => (float) filter_var($i['luas'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION), $potensi['pertanian'])) !!},
+                backgroundColor: '#4ade80',
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` ${c.formattedValue} ha` } } },
+            scales: {
+                x: { grid: { display: false }, ticks: { font: { size: 9 } } },
+                y: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 9 } } }
+            }
+        }
+    });
+
+    // ── 9. Perkebunan ─────────────────────────────────────────
+    new Chart(document.getElementById('chartPerkebunan'), {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode(array_column($potensi['perkebunan'], 'komoditas')) !!},
+            datasets: [{
+                data: {!! json_encode(array_map(fn($i) => (float) filter_var($i['luas'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION), $potensi['perkebunan'])) !!},
+                backgroundColor: '#facc15',
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` ${c.formattedValue} ha` } } },
+            scales: {
+                x: { grid: { display: false }, ticks: { font: { size: 9 } } },
+                y: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 9 } } }
+            }
+        }
+    });
+
+    // ── 10. Peternakan ────────────────────────────────────────
+    new Chart(document.getElementById('chartPeternakan'), {
+        type: 'bar',
+        data: {
+            labels: {!! json_encode(array_column($potensi['peternakan'], 'jenis')) !!},
+            datasets: [{
+                data: {!! json_encode(array_map(fn($i) => (int) filter_var($i['populasi'], FILTER_SANITIZE_NUMBER_INT), $potensi['peternakan'])) !!},
+                backgroundColor: '#f87171',
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => ` ${c.formattedValue} ekor` } } },
+            scales: {
+                x: { grid: { display: false }, ticks: { font: { size: 9 } } },
+                y: { grid: { color: '#f1f5f9' }, ticks: { font: { size: 9 } } }
+            }
+        }
+    });
+
+});
+</script>
+@endpush

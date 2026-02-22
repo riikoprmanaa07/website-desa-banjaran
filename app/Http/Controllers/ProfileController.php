@@ -3,33 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\StrukturDesa;
+use App\Models\Bpd;
 
 class ProfileController extends Controller
 {
-    public function index()
+    public function profile()
     {
-        $visionMission = [
-            'vision' => 'Mewujudkan Desa Banjaran yang maju, sejahtera, mandiri, dan religius',
-            'missions' => [
-                'Meningkatkan kualitas pelayanan publik kepada masyarakat',
-                'Mengembangkan ekonomi kreatif dan UMKM desa',
-                'Meningkatkan kualitas pendidikan dan kesehatan masyarakat',
-                'Membangun infrastruktur desa yang merata',
-                'Melestarikan nilai-nilai budaya dan kearifan lokal',
-            ]
-        ];
+        // Ambil data struktur desa urut berdasarkan kolom urutan
+        $struktur = StrukturDesa::orderBy('urutan', 'asc')->get();
+         $bpd      = Bpd::orderBy('urutan')->get();
 
-        $structure = [
-            ['position' => 'Kepala Desa', 'name' => 'Bapak Suryadi, S.Sos'],
-            ['position' => 'Sekretaris Desa', 'name' => 'Ibu Retno Wulandari, S.AP'],
-            ['position' => 'Kaur Keuangan', 'name' => 'Bapak Ahmad Fauzi, SE'],
-            ['position' => 'Kaur Perencanaan', 'name' => 'Ibu Siti Nurjanah, ST'],
-            ['position' => 'Kasi Pemerintahan', 'name' => 'Bapak Bambang Wijaya'],
-            ['position' => 'Kasi Kesejahteraan', 'name' => 'Ibu Dewi Sartika, S.Sos'],
-            ['position' => 'Kasi Kesejahteraan', 'name' => 'Ibu Dewi Sartika, S.Sos'],
-            ['position' => 'Kasi Kesejahteraan', 'name' => 'Ibu Dewi Sartika, S.Sos'],
-        ];
-
-        return view('profile', compact('visionMission', 'structure'));
+        return view('profile', compact('struktur', 'bpd'));
     }
 }

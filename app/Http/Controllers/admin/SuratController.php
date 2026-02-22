@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Surat;
 use App\Models\Penduduk;
+use App\Models\TemplateSurat;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf; // ✅ TAMBAHAN: import DomPDF untuk cetak PDF
 
 class SuratController extends Controller
 {
@@ -13,97 +15,145 @@ class SuratController extends Controller
     {
         $query = Surat::with('penduduk');
 
-        // Search
+        // Search — ✅ PERBAIKAN: tambah pencarian nama penduduk
         if ($request->filled('search')) {
-            $query->where(function($q) use ($request) {
-                $q->where('nomor_surat', 'like', '%' . $request->search . '%')
-                  ->orWhere('jenis_surat', 'like', '%' . $request->search . '%')
-                  ->orWhereHas('penduduk', function($q2) use ($request) {
-                      $q2->where('nama', 'like', '%' . $request->search . '%');
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nomor_surat', 'like', '%' . $search . '%')
+                  ->orWhere('jenis_surat', 'like', '%' . $search . '%')
+                  ->orWhereHas('penduduk', function ($q2) use ($search) {
+                      $q2->where('nama', 'like', '%' . $search . '%')
+                         ->orWhere('nik', 'like', '%' . $search . '%');
                   });
             });
         }
 
-        // Filter Status
+        // Filter status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
-        // Filter Jenis Surat
+        // Filter jenis
         if ($request->filled('jenis')) {
             $query->where('jenis_surat', $request->jenis);
         }
 
-        // Filter Tanggal
-        if ($request->filled('tanggal_dari') && $request->filled('tanggal_sampai')) {
-            $query->whereBetween('tanggal_surat', [$request->tanggal_dari, $request->tanggal_sampai]);
-        }
-
         $surat = $query->latest()->paginate(20);
 
-        return view('admin.surat.index', compact('surat'));
+        // ✅ TAMBAHAN: hitung statistik dari semua data (bukan dari paginated)
+        $stats = [
+            'pending'  => Surat::where('status', 'Pending')->count(),
+            'diproses' => Surat::where('status', 'Diproses')->count(),
+            'selesai'  => Surat::where('status', 'Selesai')->count(),
+            'ditolak'  => Surat::where('status', 'Ditolak')->count(),
+        ];
+
+        return view('admin.surat.index', compact('surat', 'stats'));
     }
 
     public function create()
     {
-        $penduduk = Penduduk::orderBy('nama')->get();
-        return view('admin.surat.create', compact('penduduk'));
+        $penduduk  = Penduduk::orderBy('nama')->get();
+        $templates = TemplateSurat::where('aktif', true)->orderBy('nama_template')->get();
+
+        return view('admin.surat.create', compact('penduduk', 'templates'));
     }
 
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'jenis_surat' => 'required|string',
-        'penduduk_id' => 'required|exists:penduduk,id',
-        'keperluan' => 'required|string',
-        'tanggal_surat' => 'required|date',
-        'penandatangan' => 'required|string',
-        'keterangan' => 'nullable|string',
-    ]);
+    {
+        $validated = $request->validate([
+            'penduduk_id'       => 'required|exists:penduduk,id',
+            'template_surat_id' => 'required|exists:template_surat,id',
+            'jenis_surat'       => 'required|string',
+            'tanggal_surat'     => 'required|date',
+            'keperluan'         => 'required|string',
+            'keterangan'        => 'nullable|string',
+        ]);
 
-    $validated['nomor_surat'] = $this->generateNoSurat();
-    $validated['status'] = 'Pending';
+        $penduduk = Penduduk::findOrFail($validated['penduduk_id']);
+        $template = TemplateSurat::findOrFail($validated['template_surat_id']);
 
-    Surat::create($validated);
+        // ✅ PERBAIKAN: generate nomor surat otomatis (tidak perlu input manual)
+        $nomorSurat = 'DESA/' . date('Y') . '/' . strtoupper(substr(uniqid(), -6));
 
-    return redirect()->route('admin.surat.index')
-        ->with('success', 'Surat berhasil dibuat');
-}
+        // Buat objek sementara untuk generateSurat
+        $tempSurat = (object) [
+            'nomor_surat'   => $nomorSurat,
+            'tanggal_surat' => new \Carbon\Carbon($validated['tanggal_surat']),
+            'keperluan'     => $validated['keperluan'],
+            'keterangan'    => $validated['keterangan'] ?? '',
+        ];
 
+        Surat::create([
+            'penduduk_id'       => $validated['penduduk_id'],
+            'template_surat_id' => $validated['template_surat_id'],
+            'jenis_surat'       => $template->nama_template, // ✅ ambil dari template, bukan input
+            'nomor_surat'       => $nomorSurat,
+            'tanggal_surat'     => $validated['tanggal_surat'],
+            'keperluan'         => $validated['keperluan'],
+            'keterangan'        => $validated['keterangan'] ?? null,
+            'isi_surat'         => $template->generateSurat($penduduk, $tempSurat),
+            'penandatangan'     => $template->penandatangan_nama,
+            'status'            => 'Pending',
+        ]);
+
+        return redirect()->route('admin.surat.index')
+            ->with('success', 'Surat berhasil dibuat.');
+    }
 
     public function show($id)
     {
-        $surat = Surat::with('penduduk')->findOrFail($id);
+        $surat = Surat::with(['penduduk', 'templateSurat'])->findOrFail($id);
         return view('admin.surat.show', compact('surat'));
     }
 
     public function edit($id)
     {
-        $surat = Surat::findOrFail($id);
-        $penduduk = Penduduk::orderBy('nama')->get();
-        return view('admin.surat.edit', compact('surat', 'penduduk'));
+        $surat     = Surat::findOrFail($id);
+        $penduduk  = Penduduk::orderBy('nama')->get();
+        $templates = TemplateSurat::where('aktif', true)->orderBy('nama_template')->get();
+
+        return view('admin.surat.edit', compact('surat', 'penduduk', 'templates'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $surat = Surat::findOrFail($id);
+   public function update(Request $request, $id)
+{
+    $surat = Surat::findOrFail($id);
 
-        $validated = $request->validate([
-            
-            'jenis_surat' => 'required|string',
-            'penduduk_id' => 'required|exists:penduduk,id',
-            'keperluan' => 'required|string',
-            'tanggal_surat' => 'required|date',
-            'penandatangan' => 'required|string',
-            'status' => 'required|in:Pending,Diproses,Selesai,Ditolak',
-            'keterangan' => 'nullable|string',
-        ]);
+    $validated = $request->validate([
+        'penduduk_id'       => 'required|exists:penduduk,id',
+        'template_surat_id' => 'required|exists:template_surat,id',
+        'nomor_surat'       => 'required|string|unique:surat,nomor_surat,' . $id,
+        'tanggal_surat'     => 'required|date',
+        'keperluan'         => 'required|string',
+        'penandatangan'     => 'required|string|max:255', // ✅ tambahan
+        'keterangan'        => 'nullable|string',
+        'status'            => 'required|in:Pending,Diproses,Selesai,Ditolak',
+    ]);
 
-        $surat->update($validated);
+    // Re-generate isi surat jika template atau penduduk berubah
+    if ($surat->template_surat_id != $validated['template_surat_id'] ||
+        $surat->penduduk_id != $validated['penduduk_id']) {
 
-        return redirect()->route('admin.surat.index')
-            ->with('success', 'Surat berhasil diupdate');
+        $penduduk = Penduduk::findOrFail($validated['penduduk_id']);
+        $template = TemplateSurat::findOrFail($validated['template_surat_id']);
+
+        $tempSurat = (object) [
+            'nomor_surat'   => $validated['nomor_surat'],
+            'tanggal_surat' => new \Carbon\Carbon($validated['tanggal_surat']),
+            'keperluan'     => $validated['keperluan'],
+            'keterangan'    => $validated['keterangan'] ?? '',
+        ];
+
+        $validated['isi_surat']     = $template->generateSurat($penduduk, $tempSurat);
+        $validated['jenis_surat']   = $template->nama_template;
     }
+
+    $surat->update($validated);
+
+    return redirect()->route('admin.surat.show', $surat->id)
+        ->with('success', 'Surat berhasil diupdate.');
+}
 
     public function destroy($id)
     {
@@ -111,48 +161,65 @@ class SuratController extends Controller
         $surat->delete();
 
         return redirect()->route('admin.surat.index')
-            ->with('success', 'Surat berhasil dihapus');
+            ->with('success', 'Surat berhasil dihapus.');
     }
 
     public function updateStatus(Request $request, $id)
     {
         $surat = Surat::findOrFail($id);
-        
 
-        $request->validate([
+        $validated = $request->validate([
             'status' => 'required|in:Pending,Diproses,Selesai,Ditolak',
         ]);
 
-        $surat->update(['status' => $request->status]);
+        $surat->update($validated);
 
-        return back()->with('success', 'Status surat berhasil diupdate');
+        return back()->with('success', 'Status surat berhasil diupdate.');
     }
-    private function generateNoSurat()
-{
-    $bulanRomawi = [
-        1 => 'I', 2 => 'II', 3 => 'III',
-        4 => 'IV', 5 => 'V', 6 => 'VI',
-        7 => 'VII', 8 => 'VIII', 9 => 'IX',
-        10 => 'X', 11 => 'XI', 12 => 'XII'
-    ];
 
-    $bulan = date('n');
-    $tahun = date('Y');
-
-    $count = Surat::whereYear('created_at', $tahun)
-                  ->whereMonth('created_at', $bulan)
-                  ->count() + 1;
-
-    $nomorUrut = str_pad($count, 3, '0', STR_PAD_LEFT);
-
-    return $nomorUrut . '/DS/' . $bulanRomawi[$bulan] . '/' . $tahun;
-}
-
-
-
+    // ✅ PERBAIKAN: print sekarang generate PDF menggunakan DomPDF
     public function print($id)
     {
-        $surat = Surat::with('penduduk')->findOrFail($id);
-        return view('admin.surat.print', compact('surat'));
+        $surat    = Surat::with(['penduduk', 'templateSurat'])->findOrFail($id);
+        $template = $surat->templateSurat;
+        $penduduk = $surat->penduduk;
+
+        // Generate isi surat terbaru dari template
+        $isiSurat = $template->generateSurat($penduduk, $surat);
+
+        $pdf = Pdf::loadView('admin.surat.print', compact('surat', 'template', 'isiSurat', 'penduduk'))
+                  ->setPaper('a4', 'portrait');
+                  
+
+        $namaFile = 'Surat-' . str_replace('/', '-', $surat->nomor_surat) . '.pdf';
+        return $pdf->download($namaFile);
+    }
+
+    public function verifikasi(Request $request, $id)
+    {
+        $surat = Surat::with(['penduduk', 'templateSurat'])->findOrFail($id);
+
+        $validated = $request->validate([
+            'nomor_surat' => 'required|unique:surat,nomor_surat,' . $id,
+        ]);
+
+        // Generate ulang isi surat dengan nomor baru
+        $tempSurat = (object) [
+            'nomor_surat'   => $validated['nomor_surat'],
+            'tanggal_surat' => $surat->tanggal_surat,
+            'keperluan'     => $surat->keperluan,
+            'keterangan'    => $surat->keterangan ?? '',
+        ];
+
+        $isiSuratGenerated = $surat->templateSurat->generateSurat($surat->penduduk, $tempSurat);
+
+        $surat->update([
+            'nomor_surat' => $validated['nomor_surat'],
+            'isi_surat'   => $isiSuratGenerated,
+            'status'      => 'Selesai',
+        ]);
+
+        return redirect()->route('admin.surat.index')
+            ->with('success', 'Surat berhasil diverifikasi dan siap cetak.');
     }
 }

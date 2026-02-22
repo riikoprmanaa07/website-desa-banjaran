@@ -15,8 +15,11 @@ class StrukturDesa extends Model
         'jabatan',
         'nama',
         'nip',
+        'pendidikan',  // ⭐ Tambahkan
+        'no_hp',       // ⭐ Tambahkan
         'foto',
         'urutan',
+        'status',
         'status',
     ];
 
