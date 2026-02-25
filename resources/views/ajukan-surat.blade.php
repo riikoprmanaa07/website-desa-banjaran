@@ -7,12 +7,12 @@
 {{-- Hero Section --}}
 <section class="bg-desa-dark text-white pt-32 pb-20 relative overflow-hidden">
     <div class="absolute top-0 right-0 w-64 h-64 bg-desa-gold/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-    <div class="absolute bottom-0 left-0 w-48 h-48 bg-desa-gold/5 rounded-full -ml-10 -mb-10 blur-2xl"></div>
+    <div class="absolute bottom-0 left-0 w-48 h-48 bg-desa-gold/5 rounded-full -ml-12 -mb-12 blur-2xl"></div>
 
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
-        
+       
         <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Pengajuan Surat Desa</h1>
-        <p class="text-gray-300 max-w-2xl mx-auto text-lg font-light">
+        <p class="text-gray-400 text-base max-w-xl mx-auto">
             Ajukan surat keterangan secara online. Cukup masukkan NIK dan data Anda akan otomatis terisi dari sistem.
         </p>
     </div>
@@ -107,7 +107,7 @@
                             class="w-full pl-12 pr-4 py-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-desa-gold focus:border-transparent transition appearance-none
                                 {{ $errors->has('template_surat_id') ? 'border-red-400 bg-red-50' : 'border-gray-200 bg-gray-50 hover:border-gray-300' }}"
                             required>
-                            <option value="">-- Pilih Jenis Surat --</option>
+                            <option value="">Pilih Jenis Surat</option>
                             @foreach($templates as $t)
                                 <option value="{{ $t->id }}" {{ old('template_surat_id') == $t->id ? 'selected' : '' }}>
                                     {{ $t->nama_template }}

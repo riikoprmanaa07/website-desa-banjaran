@@ -5,20 +5,22 @@
 @section('content')
 
 {{-- Hero Section --}}
-<section class="bg-desa-dark text-white pt-32 pb-24 relative overflow-hidden">
+<section class="bg-desa-dark text-white pt-32 pb-20 relative overflow-hidden">
     <div class="absolute inset-0 opacity-5">
     </div>
-    <div class="absolute top-0 right-0 w-96 h-96 bg-desa-gold/10 rounded-full -mr-24 -mt-24 blur-3xl"></div>
-    <div class="absolute bottom-0 left-0 w-64 h-64 bg-desa-gold/5 rounded-full -ml-16 blur-2xl"></div>
+    <div class="absolute top-0 right-0 w-64 h-64 bg-desa-gold/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-48 h-48 bg-desa-gold/5 rounded-full -ml-12 -mb-12 blur-2xl"></div>
 
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
+
        
-        <h1 class="text-4xl md:text-6xl font-extrabold mb-5 tracking-tight">Berita Terkini</h1>
-        <p class="text-gray-400 max-w-2xl mx-auto text-lg font-light leading-relaxed">
+       <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Berita Terkini</h1>
+        <p class="text-gray-400 text-base max-w-xl mx-auto">
             Informasi terbaru seputar kegiatan, pembangunan, dan program Desa Banjaran.
         </p>
     </div>
 </section>
+
 
 {{-- News Grid --}}
 <section class="py-20 bg-gray-50">
@@ -44,9 +46,7 @@
                     <span class="absolute top-5 left-5 bg-desa-gold text-desa-dark text-xs font-extrabold px-3 py-1.5 rounded-full tracking-wide uppercase">
                         {{ $featured['category'] }}
                     </span>
-                    <span class="absolute bottom-5 left-5 bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full">
-                        ✨ Berita Utama
-                    </span>
+                   
                 </div>
                 <div class="p-10 lg:p-14 flex flex-col justify-center">
                     <div class="flex items-center text-xs text-gray-400 mb-5 font-medium gap-4">
@@ -119,7 +119,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                             </svg>
                         </a>
-                        <span class="text-xs text-gray-300 font-medium">{{ $item['category'] }}</span>
+                       
                     </div>
                 </div>
             </article>

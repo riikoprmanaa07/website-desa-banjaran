@@ -20,7 +20,7 @@
 
 {{-- Content --}}
 <section class="py-20 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 space-y-12">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 space-y-20">
 {{-- perangkat desa --}}
         <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-10">
             <div class="text-center mb-12">
@@ -37,18 +37,20 @@
                 @if($kepala)
                 <div class="flex justify-center mb-12">
                     <div class="group text-center">
-                        <div class="relative w-36 h-36 mx-auto mb-4">
-                            @if($kepala->foto)
-                                <img src="{{ asset('storage/' . $kepala->foto) }}"
-                                     alt="{{ $kepala->nama }}"
-                                     class="w-full h-full rounded-2xl object-cover border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300">
-                            @else
-                                <div class="w-full h-full rounded-2xl bg-gray-100 flex items-center justify-center border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300">
-                                    <svg class="w-14 h-14 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                    </svg>
-                                </div>
-                            @endif
+                        <div class="w-36 mx-auto mb-4">
+                            <div class="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300 bg-gray-100">
+                                @if($kepala->foto)
+                                    <img src="{{ asset('storage/' . $kepala->foto) }}"
+                                         alt="{{ $kepala->nama }}"
+                                         class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center">
+                                        <svg class="w-14 h-14 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                        </svg>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                         <h3 class="text-xl font-bold text-desa-dark group-hover:text-desa-gold transition-colors">
                             {{ $kepala->nama }}
@@ -56,9 +58,6 @@
                         <p class="text-sm text-gray-500 uppercase tracking-wide mt-1">{{ $kepala->jabatan }}</p>
                         @if($kepala->pendidikan)
                             <p class="text-xs text-gray-400 mt-1">{{ $kepala->pendidikan }}</p>
-                        @endif
-                        @if($kepala->no_hp)
-                            <p class="text-xs text-gray-400 mt-0.5">{{ $kepala->no_hp }}</p>
                         @endif
                         <span class="inline-flex items-center gap-1 mt-3 text-[10px] font-semibold uppercase tracking-wider px-3 py-1 rounded-full
                             {{ $kepala->status === 'Aktif' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500' }}">
@@ -69,32 +68,42 @@
                 </div>
 
                 {{-- Divider --}}
-                <div class="flex items-center gap-4 mb-10">
-                    <div class="flex-1 h-px bg-gray-100"></div>
-                    <span class="text-xs text-gray-400 uppercase tracking-widest font-medium">Staf & Perangkat</span>
-                    <div class="flex-1 h-px bg-gray-100"></div>
+                <div class="flex flex-col items-center mb-8 relative">
+                    <div class="w-px h-8 bg-desa-gold/50"></div>
+                    
+                    <div class="w-full max-w-3xl h-px bg-desa-gold/50 relative">
+                        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-desa-gold"></div>
+                    </div>
+                    
+                    <div class="w-px h-8 bg-desa-gold/50"></div>
+                    
+                    <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-4 text-xs text-desa-gold uppercase tracking-widest font-bold">
+                        Staf & Perangkat
+                    </span>
                 </div>
                 @endif
 
                 {{-- Perangkat Lainnya --}}
-                @php $perangkat = $struktur->where('urutan', '!=', 1)->sortBy('urutan'); @endphp
+    @php $perangkat = $struktur->where('urutan', '!=', 1)->sortBy('urutan'); @endphp
 
-                @if($perangkat->count() > 0)
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            @if($perangkat->count() > 0)
+                <div class="flex flex-wrap justify-center gap-8">
                     @foreach($perangkat as $item)
-                    <div class="group text-center">
-                        <div class="relative w-32 h-32 mx-auto mb-4">
-                            @if($item->foto)
-                                <img src="{{ asset('storage/' . $item->foto) }}"
-                                     alt="{{ $item->nama }}"
-                                     class="w-full h-full rounded-2xl object-cover border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300">
-                            @else
-                                <div class="w-full h-full rounded-2xl bg-gray-100 flex items-center justify-center border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300">
-                                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                    </svg>
-                                </div>
-                            @endif
+                    <div class="w-full sm:w-[calc(50%-2rem)] lg:w-[calc(25%-2rem)] max-w-[200px] group text-center">
+                        <div class="w-32 mx-auto mb-4">
+                            <div class="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300 bg-gray-100">
+                                @if($item->foto)
+                                    <img src="{{ asset('storage/' . $item->foto) }}"
+                                         alt="{{ $item->nama }}"
+                                         class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center">
+                                        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                        </svg>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                         <h3 class="text-base font-bold text-desa-dark group-hover:text-desa-gold transition-colors">
                             {{ $item->nama }}
@@ -111,7 +120,7 @@
                     </div>
                     @endforeach
                 </div>
-                @endif
+            @endif
 
             @else
                 <p class="text-center text-gray-400 text-sm py-8">Data perangkat desa belum tersedia.</p>
@@ -139,18 +148,20 @@
                 @if($ketuaBpd)
                 <div class="flex justify-center mb-12">
                     <div class="group text-center">
-                        <div class="relative w-36 h-36 mx-auto mb-4">
-                            @if($ketuaBpd->foto)
-                                <img src="{{ asset('storage/' . $ketuaBpd->foto) }}"
-                                     alt="{{ $ketuaBpd->nama }}"
-                                     class="w-full h-full rounded-2xl object-cover border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300">
-                            @else
-                                <div class="w-full h-full rounded-2xl bg-gray-100 flex items-center justify-center border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300">
-                                    <svg class="w-14 h-14 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                    </svg>
-                                </div>
-                            @endif
+                        <div class="w-36 mx-auto mb-4">
+                            <div class="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300 bg-gray-100">
+                                @if($ketuaBpd->foto)
+                                    <img src="{{ asset('storage/' . $ketuaBpd->foto) }}"
+                                         alt="{{ $ketuaBpd->nama }}"
+                                         class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center">
+                                        <svg class="w-14 h-14 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                        </svg>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                         <h3 class="text-xl font-bold text-desa-dark group-hover:text-desa-gold transition-colors">
                             {{ $ketuaBpd->nama }}
@@ -158,9 +169,6 @@
                         <p class="text-sm text-gray-500 uppercase tracking-wide mt-1">{{ $ketuaBpd->jabatan }}</p>
                         @if($ketuaBpd->pendidikan)
                             <p class="text-xs text-gray-400 mt-1">{{ $ketuaBpd->pendidikan }}</p>
-                        @endif
-                        @if($ketuaBpd->no_hp)
-                            <p class="text-xs text-gray-400 mt-0.5">{{ $ketuaBpd->no_hp }}</p>
                         @endif
                         <span class="inline-flex items-center gap-1 mt-3 text-[10px] font-semibold uppercase tracking-wider px-3 py-1 rounded-full
                             {{ $ketuaBpd->status === 'Aktif' ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500' }}">
@@ -171,10 +179,19 @@
                 </div>
 
                 {{-- Divider --}}
-                <div class="flex items-center gap-4 mb-10">
-                    <div class="flex-1 h-px bg-gray-100"></div>
-                    <span class="text-xs text-gray-400 uppercase tracking-widest font-medium">Anggota BPD</span>
-                    <div class="flex-1 h-px bg-gray-100"></div>
+                {{-- Garis Penghubung Hierarki --}}
+                <div class="flex flex-col items-center mb-8 relative">
+                    <div class="w-px h-8 bg-desa-gold/50"></div>
+                    
+                    <div class="w-full max-w-3xl h-px bg-desa-gold/50 relative">
+                        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-desa-gold"></div>
+                    </div>
+                    
+                    <div class="w-px h-8 bg-desa-gold/50"></div>
+                    
+                    <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-4 text-xs text-desa-gold uppercase tracking-widest font-bold">
+                        Anggota BPD
+                    </span>
                 </div>
                 @endif
 
@@ -182,21 +199,23 @@
                 @php $anggotaBpd = $bpd->where('urutan', '!=', 1)->sortBy('urutan'); @endphp
 
                 @if($anggotaBpd->count() > 0)
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="flex flex-wrap justify-center gap-8">
                     @foreach($anggotaBpd as $item)
-                    <div class="group text-center">
-                        <div class="relative w-32 h-32 mx-auto mb-4">
-                            @if($item->foto)
-                                <img src="{{ asset('storage/' . $item->foto) }}"
-                                     alt="{{ $item->nama }}"
-                                     class="w-full h-full rounded-2xl object-cover border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300">
-                            @else
-                                <div class="w-full h-full rounded-2xl bg-gray-100 flex items-center justify-center border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300">
-                                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                    </svg>
-                                </div>
-                            @endif
+                    <div class="w-full sm:w-[calc(50%-2rem)] lg:w-[calc(25%-2rem)] max-w-[200px] group text-center">
+                        <div class="w-32 mx-auto mb-4">
+                            <div class="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300 bg-gray-100">
+                                @if($item->foto)
+                                    <img src="{{ asset('storage/' . $item->foto) }}"
+                                         alt="{{ $item->nama }}"
+                                         class="w-full h-full object-cover">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center">
+                                        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                        </svg>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                         <h3 class="text-base font-bold text-desa-dark group-hover:text-desa-gold transition-colors">
                             {{ $item->nama }}
@@ -219,8 +238,8 @@
                 <p class="text-center text-gray-400 text-sm py-8">Data BPD belum tersedia.</p>
             @endif
         </div>
-
     </div>
+
 </section>
 
 @endsection

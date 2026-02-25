@@ -5,20 +5,15 @@
 @section('content')
 
 {{-- Hero Section --}}
-<section class="relative bg-desa-dark pt-32 pb-20 overflow-hidden">
-    {{-- Decorative background --}}
-    <div class="absolute inset-0 opacity-5">
-        <div class="absolute top-0 left-0 w-full h-full" style="background-image: radial-gradient(circle at 20% 50%, #d4af37 0%, transparent 50%), radial-gradient(circle at 80% 20%, #d4af37 0%, transparent 40%);"></div>
-    </div>
-    <div class="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-desa-gold to-transparent opacity-30"></div>
+<section class="bg-desa-dark text-white pt-32 pb-20 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-desa-gold/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-48 h-48 bg-desa-gold/5 rounded-full -ml-12 -mb-12 blur-2xl"></div>
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        
-        <h1 class="text-4xl md:text-6xl font-bold text-white mb-6" style="font-family: 'Georgia', serif; letter-spacing: -0.02em;">
-            Galeri Desa Banjaran
-        </h1>
-        <p class="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-            Dokumentasi momen, kegiatan, dan keindahan Desa Banjaran yang terekam dalam gambar.
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
+       
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4"> Galeri Desa Banjaran</h1>
+        <p class="text-gray-400 text-base max-w-xl mx-auto">
+             Dokumentasi momen, kegiatan, dan keindahan Desa Banjaran yang terekam dalam gambar.
         </p>
     </div>
 </section>

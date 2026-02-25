@@ -5,13 +5,16 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="bg-desa-dark py-28 mt-20">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-        <h1 class="text-4xl md:text-5xl font-bold text-white font-serif mb-4">
-            Sejarah Desa Banjaran
-        </h1>
-        <p class="text-gray-300 text-lg">
-            Mengenal asal-usul dan perjalanan sejarah Desa Banjaran
+
+<section class="bg-desa-dark text-white pt-32 pb-20 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-desa-gold/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-48 h-48 bg-desa-gold/5 rounded-full -ml-12 -mb-12 blur-2xl"></div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
+       
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Sejarah Desa Banjaran</h1>
+        <p class="text-gray-400 text-base max-w-xl mx-auto">
+             Mengenal asal-usul dan perjalanan sejarah Desa Banjaran
         </p>
     </div>
 </section>
@@ -23,7 +26,7 @@
 
         <!-- Penjelasan -->
         <div>
-            <h2 class="text-3xl font-bold text-desa-dark mb-6 text-center font-serif">
+            <h2 class="text-3xl font-bold text-desa-dark mb-6 text-center font-inter">
                 Penjelasan
             </h2>
 
@@ -46,7 +49,7 @@
 
         <!-- Etimologi -->
         <div>
-            <h2 class="text-3xl font-bold text-desa-dark mb-6 text-center font-serif">
+            <h2 class="text-3xl font-bold text-desa-dark mb-6 text-center font-inter">
                 Etimologi
             </h2>
 
@@ -68,7 +71,7 @@
 <!-- CTA Section -->
 <section class="py-20 bg-white border-t">
     <div class="max-w-4xl mx-auto px-6 text-center">
-        <h2 class="text-3xl font-bold text-desa-dark mb-4 font-serif">
+        <h2 class="text-3xl font-bold text-desa-dark mb-4 font-inter">
             Mari Kenali Lebih Jauh
         </h2>
 

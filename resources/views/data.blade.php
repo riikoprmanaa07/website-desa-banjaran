@@ -4,11 +4,16 @@
 
 @section('content')
 <!-- Page Header -->
-<section class="relative bg-gradient-to-br from-desa-dark via-desa-gray to-desa-dark py-24 mt-20">
-    <div class="absolute inset-0 bg-black/40"></div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 font-serif">Data Desa Banjaran</h1>
-        <p class="text-xl text-gray-300">Informasi lengkap data kependudukan dan potensi desa</p>
+<section class="bg-desa-dark text-white pt-32 pb-20 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-64 h-64 bg-desa-gold/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+    <div class="absolute bottom-0 left-0 w-48 h-48 bg-desa-gold/5 rounded-full -ml-12 -mb-12 blur-2xl"></div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
+       
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Data Desa Banjaran</h1>
+        <p class="text-gray-400 text-base max-w-xl mx-auto">
+            Informasi lengkap data kependudukan
+        </p>
     </div>
 </section>
 

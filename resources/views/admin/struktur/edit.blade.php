@@ -99,13 +99,13 @@
                             <option value="Sekretaris Desa" {{ old('jabatan', $struktur->jabatan) == 'Sekretaris Desa' ? 'selected' : '' }}>Sekretaris Desa</option>
                             <option value="Kaur Keuangan" {{ old('jabatan', $struktur->jabatan) == 'Kaur Keuangan' ? 'selected' : '' }}>Kaur Keuangan</option>
                             <option value="Kaur Perencanaan" {{ old('jabatan', $struktur->jabatan) == 'Kaur Perencanaan' ? 'selected' : '' }}>Kaur Perencanaan</option>
-                            <option value="Kaur Umum" {{ old('jabatan', $struktur->jabatan) == 'Kaur Umum' ? 'selected' : '' }}>Kaur Umum</option>
-                            <option value="Kasi Pemerintahan" {{ old('jabatan', $struktur->jabatan) == 'Kasi Pemerintahan' ? 'selected' : '' }}>Kasi Pemerintahan</option>
-                            <option value="Kasi Kesejahteraan" {{ old('jabatan', $struktur->jabatan) == 'Kasi Kesejahteraan' ? 'selected' : '' }}>Kasi Kesejahteraan</option>
-                            <option value="Kasi Pelayanan" {{ old('jabatan', $struktur->jabatan) == 'Kasi Pelayanan' ? 'selected' : '' }}>Kasi Pelayanan</option>
-                            <option value="Kepala Dusun" {{ old('jabatan', $struktur->jabatan) == 'Kepala Dusun' ? 'selected' : '' }}>Kepala Dusun</option>
-                            <option value="BPD" {{ old('jabatan', $struktur->jabatan) == 'BPD' ? 'selected' : '' }}>BPD</option>
-                            <option value="Lainnya" {{ old('jabatan', $struktur->jabatan) == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                            <option value="Kaur TU & Umum" {{ old('jabatan', $struktur->jabatan) == 'Kaur TU & Umum' ? 'selected' : '' }}>Kaur TU & Umum</option>
+                            <option value="Kepala Seksi Pemerintahan" {{ old('jabatan', $struktur->jabatan) == 'Kepala Seksi Pemerintahan' ? 'selected' : '' }}>Kepala Seksi Pemerintahan</option>
+                            <option value="Kepala Seksi Kesejahteraan" {{ old('jabatan', $struktur->jabatan) == 'Kepala Seksi Kesejahteraan' ? 'selected' : '' }}>Kepala Seksi Kesejahteraan</option>
+                            <option value="Kepala Seksi Pelayanann" {{ old('jabatan', $struktur->jabatan) == 'Kepala Seksi Pelayanan' ? 'selected' : '' }}>Kepala Seksi Pelayanan</option>
+                            <option value="Staf Pemerintahan" {{ old('jabatan', $struktur->jabatan) == 'Staf Pemerintahan' ? 'selected' : '' }}>Staf Pemerintahan</option>
+                            <option value=">Staf Kesejahteraan" {{ old('jabatan', $struktur->jabatan) == '>Staf Kesejahteraan' ? 'selected' : '' }}>Staf Kesejahteraan</option>
+                            <option value="Staf Pelayanan" {{ old('jabatan', $struktur->jabatan) == 'Staf Pelayanan' ? 'selected' : '' }}>Staf Pelayanan</option>
                         </select>
                         @error('jabatan')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
