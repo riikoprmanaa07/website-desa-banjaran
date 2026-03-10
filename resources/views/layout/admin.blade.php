@@ -29,14 +29,27 @@
 
     <style>
         body { font-family: 'Inter', sans-serif; }
+        
+        /* Scrollbar kustom untuk sidebar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1e293b; /* desa-gray */
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
 
-    <!-- Sidebar -->
     <div class="fixed inset-y-0 left-0 w-64 bg-desa-dark text-white flex flex-col z-30" id="sidebar">
-        <!-- Logo -->
-        <div class="flex items-center justify-center h-20 border-b border-gray-700">
+        <div class="flex items-center justify-center h-20 border-b border-gray-700 shrink-0">
             <img src="{{ asset('images/logo-jepara.png') }}" alt="Logo" class="w-10 h-10 mr-3">
             <div>
                 <h1 class="text-xl font-bold">Admin Panel</h1>
@@ -44,8 +57,7 @@
             </div>
         </div>
 
-        <!-- Navigation -->
-        <nav class="mt-6 px-4">
+        <nav class="mt-6 px-4 flex-1 overflow-y-auto pb-4 custom-scrollbar">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-3 mb-2 rounded-lg hover:bg-gray-700 transition {{ request()->routeIs('admin.dashboard') ? 'bg-desa-gold text-white' : '' }}">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
@@ -66,9 +78,10 @@
                 </svg>
                 Pengelolaan Surat
             </a>
+            
             <a href="{{ route('admin.template-surat.index') }}" class="flex items-center px-4 py-3 mb-2 rounded-lg hover:bg-gray-700 transition {{ request()->routeIs('admin.template-surat.*') ? 'bg-desa-gold text-white' : '' }}">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
                 </svg>
                 Template Surat
             </a>
@@ -89,14 +102,15 @@
 
             <a href="{{ route('admin.rw.index') }}" class="flex items-center px-4 py-3 mb-2 rounded-lg hover:bg-gray-700 transition {{ request()->routeIs('admin.rw.*') ? 'bg-desa-gold text-white' : '' }}">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
                 </svg>
                 Data RW
             </a>
 
             <a href="{{ route('admin.rt.index') }}" class="flex items-center px-4 py-3 mb-2 rounded-lg hover:bg-gray-700 transition {{ request()->routeIs('admin.rt.*') ? 'bg-desa-gold text-white' : '' }}">
                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
                 Data RT
             </a>
@@ -108,26 +122,31 @@
                 Struktur Desa
             </a>
 
-    <a href="{{ route('admin.bpd.index') }}" class="flex items-center px-4 py-3 mb-2 rounded-lg hover:bg-gray-700 transition {{ request()->routeIs('admin.bpd.*') ? 'bg-desa-gold text-white' : '' }}">
-    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-    </svg>
-    BPD
-    </a>
+            <a href="{{ route('admin.bpd.index') }}" class="flex items-center px-4 py-3 mb-2 rounded-lg hover:bg-gray-700 transition {{ request()->routeIs('admin.bpd.*') ? 'bg-desa-gold text-white' : '' }}">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+                BPD
+            </a>
+            
+            <a href="{{ route('admin.users.index') }}" class="flex items-center px-4 py-3 mb-2 rounded-lg hover:bg-gray-700 transition {{ request()->routeIs('admin.users.*') ? 'bg-desa-gold text-white' : '' }}">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+                Manajemen Akun
+            </a>
         </nav>
     </div>
 
-    <!-- Main Content -->
     <div class="ml-64">
-        <!-- Top Bar -->
-        <header class="bg-white shadow-sm h-20 flex items-center justify-between px-8">
+        <header class="sticky top-0 z-20 bg-white shadow-sm h-20 flex items-center justify-between px-8">
             <div>
                 <h2 class="text-2xl font-bold text-gray-800">@yield('page-title', 'Dashboard')</h2>
                 <p class="text-sm text-gray-500">@yield('page-subtitle', 'Selamat datang di Admin Panel')</p>
             </div>
 
             <div class="flex items-center space-x-4">
-                <a href="{{ route('home') }}" target="_blank" class="text-gray-600 hover:text-desa-gold transition">
+                <a href="{{ route('home') }}" target="_blank" class="text-gray-600 hover:text-desa-gold transition" title="Lihat Website Publik">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                     </svg>
@@ -145,7 +164,6 @@
                     </button>
 
                     <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-200">
-                        
                         <hr class="my-2">
                         <form action="{{ route('admin.logout') }}" method="POST">
                             @csrf
@@ -161,7 +179,6 @@
             </div>
         </header>
 
-        <!-- Content -->
         <main class="p-8">
             @if(session('success'))
                 <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded" role="alert">

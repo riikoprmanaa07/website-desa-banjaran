@@ -21,6 +21,13 @@ class PengajuanSuratController extends Controller
             'nik'               => 'required|digits:16',
             'template_surat_id' => 'required|exists:template_surat,id',
             'keperluan'         => 'required|string|max:500',
+            'jenis_dokumen'     => 'required|in:KTP,KK',
+            'file_dokumen'      => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ], [
+            'jenis_dokumen.required' => 'Pilih jenis dokumen (KTP atau KK).',
+            'file_dokumen.required'  => 'Dokumen identitas wajib diunggah.',
+            'file_dokumen.mimes'     => 'Format file harus JPG, PNG, atau PDF.',
+            'file_dokumen.max'       => 'Ukuran file maksimal 2MB.',
         ]);
 
         $penduduk = Penduduk::where('nik', $request->nik)->first();
@@ -34,6 +41,9 @@ class PengajuanSuratController extends Controller
 
         $nomor = 'DESA-' . date('Y') . '-' . strtoupper(substr(uniqid(), -6));
 
+        // Simpan file dokumen ke storage private
+        $pathDokumen = $request->file('file_dokumen')->store('dokumen-surat', 'private');
+
         $surat = Surat::create([
             'penduduk_id'       => $penduduk->id,
             'template_surat_id' => $template->id,
@@ -43,6 +53,8 @@ class PengajuanSuratController extends Controller
             'keperluan'         => $request->keperluan,
             'penandatangan'     => $template->penandatangan_nama,
             'status'            => 'Pending',
+            'jenis_dokumen'     => $request->jenis_dokumen,
+            'file_dokumen'      => $pathDokumen,
         ]);
 
         return redirect()->route('pengajuan.sukses', $surat->nomor_surat)

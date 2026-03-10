@@ -5,39 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Desa Banjaran')</title>
     
-    <script src="https://cdn.tailwindcss.com"></script>
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    colors: {
-                        desa: {
-                            gold: '#d4af37',
-                            dark: '#0f172a', 
-                            gray: '#1e293b',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        /* Custom scrollbar untuk tampilan lebih bersih */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    </style>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen antialiased selection:bg-desa-gold selection:text-white">
 
@@ -103,7 +75,7 @@
 
                 {{-- HAMBURGER MOBILE --}}
                 <div class="lg:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-white focus:outline-none p-2 rounded-md hover:bg-white/5 transition">
+                    <button id="mobile-menu-btn" aria-label="Buka menu navigasi" class="text-gray-300 hover:text-white focus:outline-none p-2 rounded-md hover:bg-white/5 transition">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                         </svg>
@@ -147,21 +119,18 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
                 
-                {{-- KOLOM 1: IDENTITAS (Lebih Lebar) --}}
+                {{-- KOLOM 1: IDENTITAS --}}
                 <div class="lg:col-span-4 space-y-4">
                     <div class="flex items-center space-x-3 mb-4">
                         <img src="{{ asset('images/logo-jepara.png') }}" alt="Logo Jepara" class="w-14 h-14 object-contain">
                         <div>
                             <h3 class="text-xl font-inter text-white font-bold leading-none">Desa Banjaran</h3>
-                            <span class="text-xs text-desa-gold uppercase tracking-widest mt-1 block">Kab. Jepara</span>
+                            <span class="text-gray-400 text-[10px] uppercase tracking-[0.2em] mt-0.5">Kab. Jepara</span>
                         </div>
                     </div>
                     <p class="text-sm leading-relaxed text-gray-400 pr-4">
                         Banjaran adalah sebuah desa di Kecamatan Bangsri, Kabupaten Jepara, Provinsi Jawa Tengah. Portal ini hadir untuk memberikan kemudahan informasi dan layanan bagi masyarakat.
                     </p>
-                    
-                    {{-- Placeholder Sosial Media --}}
-                    
                 </div>
 
                 {{-- KOLOM 2: AKSES CEPAT --}}
@@ -180,11 +149,16 @@
                 <div class="lg:col-span-3">
                     <h4 class="text-white font-bold mb-5 uppercase tracking-wider text-sm border-l-2 border-desa-gold pl-3">Kontak & Lokasi</h4>
                     <ul class="space-y-4 text-sm">
-                        <li class="flex items-start gap-3 group">
-                            <div class="p-2 bg-white/5 rounded-lg group-hover:bg-desa-gold/20 transition">
-                                <svg class="w-4 h-4 text-desa-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                       <li class="flex items-start gap-3 group">
+                            <div class="p-2 bg-white/5 rounded-lg group-hover:bg-desa-gold/20 transition-colors duration-300">
+                                <svg class="w-4 h-4 text-desa-gold shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                                </svg>
                             </div>
-                            <span class="leading-relaxed mt-1">Desa Banjaran, Kec. Bangsri,<br>Kab. Jepara, Jawa Tengah 59453</span>
+                            <span class="leading-relaxed mt-1">
+                                Jl. Raya Bangsri - Srikandang KM. 03, Desa Banjaran, Kec. Bangsri<br>
+                                Kab. Jepara, Jawa Tengah 59453
+                            </span>
                         </li>
                         <li class="flex items-center gap-3 group">
                             <div class="p-2 bg-white/5 rounded-lg group-hover:bg-desa-gold/20 transition">
@@ -196,7 +170,7 @@
                             <div class="p-2 bg-white/5 rounded-lg group-hover:bg-desa-gold/20 transition">
                                 <svg class="w-4 h-4 text-desa-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                             </div>
-                            <span>desabanjaran@jepara.go.id</span>
+                            <span>desabanjaran1@gmail.com</span>
                         </li>
                     </ul>
                 </div>
@@ -224,12 +198,11 @@
         </div>
 
         {{-- COPYRIGHT --}}
-        <div class="bg-black/80 py-6 border-t border-gray-900">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-                <p>© {{ date('Y') }} Pemerintah Desa Banjaran.</p>
-                
+            <div class="bg-black/80 py-6 border-t border-gray-900">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center gap-4 text-xs text-gray-500">
+                    <p class="text-center">© {{ date('Y') }} Pemerintah Desa Banjaran.</p>
+                </div>
             </div>
-        </div>
     </footer>
 
     <script>

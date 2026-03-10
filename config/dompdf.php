@@ -110,7 +110,7 @@ return [
         /**
          * Whether to enable font subsetting or not.
          */
-        'enable_font_subsetting' => false,
+        'enable_font_subsetting' => true, // ✅ Aktifkan agar font ter-embed dengan benar di PDF
 
         /**
          * The PDF rendering backend to use
@@ -152,7 +152,7 @@ return [
          * the desired content might be different (e.g. screen or projection view of html file).
          * Therefore allow specification of content here.
          */
-        'default_media_type' => 'screen',
+        'default_media_type' => 'print', // ✅ Ganti screen → print agar CSS @media print aktif
 
         /**
          * The default paper size.
@@ -161,7 +161,7 @@ return [
          *
          * @see CPDF_Adapter::PAPER_SIZES for valid sizes ('letter', 'legal', 'A4', etc.)
          */
-        'default_paper_size' => 'a4',
+        'default_paper_size' => [0, 0, 612.28, 935.43], // ✅ Default Folio F4 (215.9mm x 330.2mm)
 
         /**
          * The default paper orientation.
@@ -179,7 +179,7 @@ return [
          *
          * @var string
          */
-        'default_font' => 'serif',
+        'default_font' => 'Times New Roman', // ✅ Sesuaikan dengan font surat
 
         /**
          * Image DPI setting
@@ -214,7 +214,7 @@ return [
          *
          * @var int
          */
-        'dpi' => 96,
+        'dpi' => 150, // ✅ Naikkan dari 96 → 150 agar teks & gambar lebih tajam
 
         /**
          * Enable embedded PHP
@@ -286,7 +286,7 @@ return [
         /**
          * A ratio applied to the fonts height to be more like browsers' line height
          */
-        'font_height_ratio' => 1.1,
+        'font_height_ratio' => 1.0, // ✅ Turunkan dari 1.1 → 1.0 agar spasi baris lebih presisi
 
         /**
          * Use the HTML5 Lib parser

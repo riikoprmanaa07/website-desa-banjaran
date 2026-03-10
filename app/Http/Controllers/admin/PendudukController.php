@@ -12,7 +12,7 @@ class PendudukController extends Controller
     {
         $query = Penduduk::query();
 
-        // Search
+        // Search NIK atau Nama
         if ($request->filled('search')) {
             $query->where(function($q) use ($request) {
                 $q->where('nik', 'like', '%' . $request->search . '%')
@@ -20,9 +20,15 @@ class PendudukController extends Controller
             });
         }
 
+        // Filter RW (Tambahkan bagian ini)
+        if ($request->filled('rw')) {
+            $query->where('rw', str_pad($request->rw, 3, '0', STR_PAD_LEFT)); 
+            // str_pad opsional, berguna untuk memastikan format selalu '001', '002', dll
+        }
+
         // Filter RT
         if ($request->filled('rt')) {
-            $query->where('rt', $request->rt);
+            $query->where('rt', str_pad($request->rt, 3, '0', STR_PAD_LEFT));
         }
 
         // Filter Gender
@@ -31,6 +37,9 @@ class PendudukController extends Controller
         }
 
         $penduduk = $query->latest()->paginate(20);
+
+        // Tambahkan query string ke pagination agar saat pindah halaman (page=2), filter tidak hilang
+        $penduduk->appends($request->all());
 
         return view('admin.penduduk.index', compact('penduduk'));
     }

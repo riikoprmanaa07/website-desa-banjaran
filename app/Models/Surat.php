@@ -20,8 +20,11 @@ class Surat extends Model
         'keperluan',
         'keterangan',
         'isi_surat',
-        'penandatangan',  // ✅ INI YANG KURANG — penyebab error utama
+        'penandatangan',  
         'status',
+        'file_dokumen',
+        'jenis_dokumen',
+
     ];
 
     protected $casts = [

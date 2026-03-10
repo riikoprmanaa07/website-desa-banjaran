@@ -40,7 +40,9 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2"/>
                         </svg>
                     </div>
+                    {{-- PERUBAHAN DI SINI: Tambahan inputmode dan pattern --}}
                     <input type="text" name="nik" maxlength="16"
+                        inputmode="numeric" pattern="[0-9]*"
                         value="{{ request('nik') }}"
                         placeholder="Masukkan 16 digit NIK"
                         class="w-full pl-12 pr-4 py-3 border border-gray-200 bg-gray-50 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-desa-gold focus:border-transparent transition"
@@ -124,8 +126,8 @@
                                     <p class="text-gray-700 font-medium">{{ $item->tanggal_surat->format('d F Y') }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-gray-400 text-xs">Penandatangan</p>
-                                    <p class="text-gray-700 font-medium">{{ $item->penandatangan ?? '-' }}</p>
+                                    <p class="text-gray-400 text-xs">Alamat</p>
+                                    <p class="text-gray-700 font-medium">{{ $penduduk->alamat }}</p>
                                 </div>
                                 <div>
                                     <p class="text-gray-400 text-xs">Nomor Surat</p>

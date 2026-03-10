@@ -185,11 +185,35 @@ class SuratController extends Controller
         $penduduk = $surat->penduduk;
 
         // Generate isi surat terbaru dari template
-        $isiSurat = $template->generateSurat($penduduk, $surat);
+        $isiSuratRaw = $template->generateSurat($penduduk, $surat);
 
+        // ✅ Konversi isi surat menjadi HTML tabel label–nilai agar rapi saat dicetak
+        // Format yang didukung: "Label : Nilai" per baris
+        $baris = explode("\n", $isiSuratRaw);
+        $html  = '<table style="width:100%;border-collapse:collapse;">';
+        foreach ($baris as $b) {
+            $b = trim($b);
+            if ($b === '') continue;
+
+            if (str_contains($b, ':')) {
+                [$label, $nilai] = explode(':', $b, 2);
+                $html .= '<tr>
+                    <td class="label">' . e(trim($label)) . '</td>
+                    <td class="titik-dua">:</td>
+                    <td class="nilai">' . e(trim($nilai)) . '</td>
+                </tr>';
+            } else {
+                // Baris tanpa titik dua: tampilkan penuh (misal kalimat paragraf)
+                $html .= '<tr><td colspan="3">' . e($b) . '</td></tr>';
+            }
+        }
+        $html .= '</table>';
+        $isiSurat = $html;
+
+        // ✅ Ukuran kertas Folio/F4 (215.9mm x 330.2mm) sesuai dokumen RTF asli
+        // Dalam satuan point DomPDF: 1mm = 2.8346 pt
         $pdf = Pdf::loadView('admin.surat.print', compact('surat', 'template', 'isiSurat', 'penduduk'))
-                  ->setPaper('a4', 'portrait');
-                  
+                  ->setPaper([0, 0, 612.28, 935.43], 'portrait');
 
         $namaFile = 'Surat-' . str_replace('/', '-', $surat->nomor_surat) . '.pdf';
         return $pdf->download($namaFile);

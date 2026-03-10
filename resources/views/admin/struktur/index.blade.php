@@ -53,17 +53,19 @@
                     </div>
                     @endif
 
-                    <div class="absolute top-3 left-3">
-                        <span class="px-2.5 py-1 bg-desa-gold text-white text-[11px] font-bold rounded shadow-md">
-                            {{ $item->jabatan }}
-                        </span>
-                    </div>
+                   {{-- Badge Jabatan di Kiri Atas --}}
+<div class="absolute top-3 left-3 right-3">
+    <span class="inline-block max-w-full px-2.5 py-1 bg-desa-gold text-white text-[11px] font-bold rounded shadow-md truncate" title="{{ $item->jabatan }}">
+        {{ $item->jabatan }}
+    </span>
+</div>
 
-                    <div class="absolute top-3 right-3">
-                        <span class="px-2.5 py-1 {{ $item->status == 'Aktif' ? 'bg-green-500' : 'bg-gray-500' }} text-white text-[11px] font-bold rounded shadow-md">
-                            {{ $item->status }}
-                        </span>
-                    </div>
+{{-- Badge Status dipindah ke Kanan Bawah foto --}}
+<div class="absolute bottom-3 right-3">
+    <span class="px-2.5 py-1 {{ $item->status == 'Aktif' ? 'bg-green-500' : 'bg-gray-500' }} text-white text-[11px] font-bold rounded shadow-md border border-white/20">
+        {{ $item->status }}
+    </span>
+</div>
                 </div>
 
                 <div class="p-4">

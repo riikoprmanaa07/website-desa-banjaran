@@ -14,11 +14,13 @@
                 'images/bg2.png'
             ];
         @endphp
+        
         @foreach($sliderImages as $index => $img)
         <div class="slider-image absolute inset-0 bg-cover bg-center transition-opacity duration-1000 {{ $index == 0 ? 'opacity-100' : 'opacity-0' }}"
-             style="background-image: url('{{ $img }}');">
+             style="background-image: url('{{ asset($img) }}');">
         </div>
         @endforeach
+
         <div class="absolute inset-0 bg-gradient-to-r from-desa-dark via-desa-dark/75 to-desa-dark/20"></div>
         <div class="absolute inset-0 bg-gradient-to-t from-desa-dark/50 via-transparent to-transparent"></div>
     </div>
@@ -28,7 +30,7 @@
             <span class="inline-block px-3 py-1 bg-desa-gold/20 text-desa-gold text-xs font-bold tracking-[0.2em] uppercase mb-6 rounded">Portal Resmi</span>
             <h1 class="text-3xl sm:text-4xl lg:text-5xl text-white font-extrabold leading-[1.08] tracking-tight mb-4">
                 Desa Banjaran<br>
-                <span class="text-desa-gold">Mandiri &amp; Sejahtera</span>
+                <span class="text-desa-gold">Mandiri & Sejahtera</span>
             </h1>
             <p class="text-gray-300 text-xs sm:text-sm lg:text-base leading-relaxed mb-7 max-w-lg">
                 Mewujudkan tata kelola pemerintahan desa yang transparan, akuntabel, dan mengutamakan pelayanan prima bagi masyarakat.
@@ -38,7 +40,6 @@
                 <a href="#sambutan"
                    class="inline-flex items-center gap-2 bg-desa-gold hover:bg-yellow-500 text-desa-dark px-7 py-3 rounded-lg font-bold text-sm uppercase tracking-wider transition-all shadow-lg hover:-translate-y-0.5">
                     Jelajahi Desa
-                    
                 </a>
                 <a href="{{ route('services') }}"
                    class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border border-white/25 px-7 py-3 rounded-lg font-bold text-sm uppercase tracking-wider transition-all hover:-translate-y-0.5">
@@ -48,8 +49,6 @@
 
         </div>
     </div>
-
- 
 
 </section>
 
@@ -62,7 +61,7 @@
                 {{-- FOTO --}}
                 <div class="lg:col-span-2 relative">
                     <div class="aspect-[3/4] max-h-80 lg:max-h-96 rounded-2xl overflow-hidden shadow-lg bg-gray-200 mx-auto" style="max-width: 260px;">
-                        @if($kepalaDesa && $kepalaDesa->foto)
+                        @if(!empty($kepalaDesa) && $kepalaDesa->foto)
                             <img src="{{ asset('storage/' . $kepalaDesa->foto) }}"
                                  alt="{{ $kepalaDesa->nama }}"
                                  class="w-full h-full object-cover">
@@ -192,7 +191,7 @@
                     Kabar Desa Banjaran
                 </h2>
             </div>
-            <a href="{{ route('news') }}"
+            <a href="{{ route('news') ?? '#' }}"
                class="self-start sm:self-auto flex-shrink-0 inline-flex items-center gap-2 px-5 py-2.5 border-2 border-gray-200 rounded-full font-bold text-sm text-gray-600 hover:border-desa-gold hover:text-desa-gold transition-colors group">
                 Semua Berita
                 <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -202,52 +201,54 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-            @foreach($latestNews as $news)
-            <article class="group bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
+            @if(!empty($latestNews))
+                @foreach($latestNews as $news)
+                <article class="group bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
 
-                {{-- Gambar --}}
-                <div class="relative h-44 sm:h-48 overflow-hidden flex-shrink-0 bg-gray-100">
-                    @if(!empty($news['image']))
-                        <img src="{{ $news['image'] }}"
-                             alt="{{ $news['title'] }}"
-                             class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-                    @else
-                        <div class="w-full h-full flex items-center justify-center">
-                            <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                            </svg>
+                    {{-- Gambar --}}
+                    <div class="relative h-44 sm:h-48 overflow-hidden flex-shrink-0 bg-gray-100">
+                        @if(!empty($news['image']))
+                            <img src="{{ $news['image'] }}"
+                                 alt="{{ $news['title'] }}"
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center">
+                                <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                </svg>
+                            </div>
+                        @endif
+                        <div class="absolute top-3 left-3">
+                            <span class="bg-white/95 backdrop-blur-sm text-desa-dark text-xs font-bold px-2.5 py-1 rounded-md shadow-sm">
+                                {{ $news['date'] ?? '' }}
+                            </span>
                         </div>
-                    @endif
-                    <div class="absolute top-3 left-3">
-                        <span class="bg-white/95 backdrop-blur-sm text-desa-dark text-xs font-bold px-2.5 py-1 rounded-md shadow-sm">
-                            {{ $news['date'] }}
-                        </span>
                     </div>
-                </div>
 
-                {{-- Konten --}}
-                <div class="p-5 flex flex-col flex-grow">
-                    <h3 class="text-sm font-bold text-desa-dark mb-2 line-clamp-2 group-hover:text-desa-gold transition-colors leading-snug">
-                        <a href="{{ route('news.show', $news['id']) }}">
-                            {{ $news['title'] }}
-                        </a>
-                    </h3>
-                    <p class="text-gray-400 text-xs leading-relaxed line-clamp-3 flex-grow">
-                        {{ $news['excerpt'] }}
-                    </p>
-                    <div class="mt-4 pt-4 border-t border-gray-50">
-                        <a href="{{ route('news.show', $news['id']) }}"
-                           class="inline-flex items-center gap-1.5 text-xs font-bold text-desa-dark hover:text-desa-gold transition-colors group/link">
-                            Baca Selengkapnya
-                            <svg class="w-3 h-3 group-hover/link:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
-                            </svg>
-                        </a>
+                    {{-- Konten --}}
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h3 class="text-sm font-bold text-desa-dark mb-2 line-clamp-2 group-hover:text-desa-gold transition-colors leading-snug">
+                            <a href="{{ route('news.show', $news['id'] ?? 1) }}">
+                                {{ $news['title'] ?? '' }}
+                            </a>
+                        </h3>
+                        <p class="text-gray-400 text-xs leading-relaxed line-clamp-3 flex-grow">
+                            {{ $news['excerpt'] ?? '' }}
+                        </p>
+                        <div class="mt-4 pt-4 border-t border-gray-50">
+                            <a href="{{ route('news.show', $news['id'] ?? 1) }}"
+                               class="inline-flex items-center gap-1.5 text-xs font-bold text-desa-dark hover:text-desa-gold transition-colors group/link">
+                                Baca Selengkapnya
+                                <svg class="w-3 h-3 group-hover/link:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                                </svg>
+                            </a>
+                        </div>
                     </div>
-                </div>
 
-            </article>
-            @endforeach
+                </article>
+                @endforeach
+            @endif
         </div>
 
     </div>
@@ -347,13 +348,15 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const slides = document.querySelectorAll('.slider-image');
-        let currentSlide = 0;
-        
-        setInterval(() => {
-            slides[currentSlide].classList.replace('opacity-100', 'opacity-0');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.replace('opacity-0', 'opacity-100');
-        }, 5000);
+        if(slides.length > 0) {
+            let currentSlide = 0;
+            
+            setInterval(() => {
+                slides[currentSlide].classList.replace('opacity-100', 'opacity-0');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.replace('opacity-0', 'opacity-100');
+            }, 5000);
+        }
     });
 </script>
 @endpush

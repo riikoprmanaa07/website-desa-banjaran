@@ -103,6 +103,8 @@
                             <option value="Staf Pemerintahan" {{ old('jabatan') == 'Staf Pemerintahan' ? 'selected' : '' }}>Staf Pemerintahan</option>
                             <option value="Staf Kesejahteraan" {{ old('jabatan') == 'Staf Kesejahteraan' ? 'selected' : '' }}>Staf Kesejahteraan</option>
                             <option value="Staf Pelayanan" {{ old('jabatan') == 'Staf Pelayanan' ? 'selected' : '' }}>Staf Pelayanan</option>
+                            <option value="Kamituwo I" {{ old('jabatan') == '' ? 'selected' : 'Kamituwo I' }}>Kamituwo I</option>
+                            <option value="Kamituwo II" {{ old('jabatan') == 'Kamituwo II' ? 'selected' : '' }}>Kamituwo II</option>
                         </select>
                         @error('jabatan')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

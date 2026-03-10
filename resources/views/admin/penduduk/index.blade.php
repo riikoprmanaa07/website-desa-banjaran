@@ -21,42 +21,59 @@
     </div>
 
     <!-- Search & Filter -->
-    <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
-        <form action="{{ route('admin.penduduk.index') }}" method="GET" class="flex gap-4">
-            <div class="flex-1">
-                <input type="text" name="search" value="{{ request('search') }}" 
-                    placeholder="Cari NIK atau Nama..." 
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold focus:border-transparent">
-            </div>
-            <select name="rt" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold">
+   <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
+    <form action="{{ route('admin.penduduk.index') }}" method="GET" class="flex flex-col lg:flex-row gap-4">
+        
+        <div class="flex-1">
+            <input type="text" name="search" value="{{ request('search') }}" 
+                placeholder="Cari NIK atau Nama..." 
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold focus:border-transparent">
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-4">
+            <select name="rw" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold bg-white">
+                <option value="">Semua RW</option>
+                @for($i = 1; $i <= 10; $i++) <option value="{{ str_pad($i, 3, '0', STR_PAD_LEFT) }}" {{ request('rw') == str_pad($i, 3, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
+                    RW {{ str_pad($i, 3, '0', STR_PAD_LEFT) }}
+                </option>
+                @endfor
+            </select>
+
+            <select name="rt" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold bg-white">
                 <option value="">Semua RT</option>
-                @for($i = 1; $i <= 10; $i++)
-                <option value="{{ str_pad($i, 3, '0', STR_PAD_LEFT) }}" {{ request('rt') == str_pad($i, 3, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
+                @for($i = 1; $i <= 10; $i++) <option value="{{ str_pad($i, 3, '0', STR_PAD_LEFT) }}" {{ request('rt') == str_pad($i, 3, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
                     RT {{ str_pad($i, 3, '0', STR_PAD_LEFT) }}
                 </option>
                 @endfor
             </select>
-            <select name="gender" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold">
+
+            <select name="gender" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold bg-white">
                 <option value="">Semua JK</option>
                 <option value="L" {{ request('gender') == 'L' ? 'selected' : '' }}>Laki-laki</option>
                 <option value="P" {{ request('gender') == 'P' ? 'selected' : '' }}>Perempuan</option>
             </select>
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition">
+        </div>
+
+        <div class="flex gap-3">
+            <button type="submit" class="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition">
                 Cari
             </button>
-            @if(request()->hasAny(['search', 'rt', 'gender']))
-            <a href="{{ route('admin.penduduk.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg font-medium transition">
+            
+            @if(request()->hasAny(['search', 'rw', 'rt', 'gender']) && (request('search') != '' || request('rw') != '' || request('rt') != '' || request('gender') != ''))
+            <a href="{{ route('admin.penduduk.index') }}" class="flex-1 sm:flex-none text-center bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium transition">
                 Reset
             </a>
             @endif
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 
     <!-- Table -->
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIK</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
@@ -71,7 +88,11 @@
             <tbody class="bg-white divide-y divide-gray-200">
                 @forelse($penduduk as $item)
                 <tr class="hover:bg-gray-50 transition">
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->nik }}</td>
+
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {{ $item->nik}}
+                    </td>
+            
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="text-sm font-medium text-gray-900">{{ $item->nama }}</div>
                         <div class="text-sm text-gray-500">{{ $item->agama }}</div>

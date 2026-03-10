@@ -199,25 +199,27 @@
                     </div>
                 <!-- Pendidikan -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Pendidikan Terakhir <span class="text-red-500">*</span>
-                        </label>
-                        <select name="pendidikan" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold @error('pendidikan') border-red-500 @enderror">
-                            <option value="">Pilih Pendidikan</option>
-                            <option value="Tidak/Belum Sekolah" {{ old('pendidikan') == 'Tidak/Belum Sekolah' ? 'selected' : '' }}>Tidak/Belum Sekolah</option>
-                            <option value="SD" {{ old('pendidikan') == 'SD' ? 'selected' : '' }}>SD</option>
-                            <option value="SMP" {{ old('pendidikan') == 'SMP' ? 'selected' : '' }}>SMP</option>
-                            <option value="SMA/SMK" {{ old('pendidikan') == 'SMA/SMK' ? 'selected' : '' }}>SMA/SMK</option>
-                            <option value="D3" {{ old('pendidikan') == 'D3' ? 'selected' : '' }}>D3</option>
-                            <option value="S1" {{ old('pendidikan') == 'S1' ? 'selected' : '' }}>S1</option>
-                            <option value="S2" {{ old('pendidikan') == 'S2' ? 'selected' : '' }}>S2</option>
-                            <option value="S3" {{ old('pendidikan') == 'S3' ? 'selected' : '' }}>S3</option>
-                        </select>
-                        @error('pendidikan')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
+    <label class="block text-sm font-medium text-gray-700 mb-2">
+        Pendidikan Terakhir <span class="text-red-500">*</span>
+    </label>
+    <select name="pendidikan" required
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold @error('pendidikan') border-red-500 @enderror">
+        <option value="">Pilih Pendidikan </option>
+        <option value="TIDAK / BELUM SEKOLAH" {{ old('pendidikan') == 'TIDAK / BELUM SEKOLAH' ? 'selected' : '' }}>TIDAK / BELUM SEKOLAH</option>
+        <option value="BELUM TAMAT SD / SEDERAJAT" {{ old('pendidikan') == 'BELUM TAMAT SD / SEDERAJAT' ? 'selected' : '' }}>BELUM TAMAT SD / SEDERAJAT</option>
+        <option value="TAMAT SD / SEDERAJAT" {{ old('pendidikan') == 'TAMAT SD / SEDERAJAT' ? 'selected' : '' }}>TAMAT SD / SEDERAJAT</option>
+        <option value="SLTP / SEDERAJAT" {{ old('pendidikan') == 'SLTP / SEDERAJAT' ? 'selected' : '' }}>SLTP / SEDERAJAT</option>
+        <option value="SLTA / SEDERAJAT" {{ old('pendidikan') == 'SLTA / SEDERAJAT' ? 'selected' : '' }}>SLTA / SEDERAJAT</option>
+        <option value="DIPLOMA I / II" {{ old('pendidikan') == 'DIPLOMA I / II' ? 'selected' : '' }}>DIPLOMA I / II</option>
+        <option value="AKADEMI / DIPLOMA III / S. MUDA" {{ old('pendidikan') == 'AKADEMI / DIPLOMA III / S. MUDA' ? 'selected' : '' }}>AKADEMI / DIPLOMA III / S. MUDA</option>
+        <option value="DIPLOMA IV / STRATA I" {{ old('pendidikan') == 'DIPLOMA IV / STRATA I' ? 'selected' : '' }}>DIPLOMA IV / STRATA I</option>
+        <option value="STRATA II" {{ old('pendidikan') == 'STRATA II' ? 'selected' : '' }}>STRATA II</option>
+        <option value="STRATA III" {{ old('pendidikan') == 'STRATA III' ? 'selected' : '' }}>STRATA III</option>
+    </select>
+    @error('pendidikan')
+        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+    @enderror
+</div>
 
                     <!-- Kewarganegaraan -->
                     <div>

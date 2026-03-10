@@ -3,127 +3,209 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class DataController extends Controller
 {
     public function index()
     {
-        // Data Demografi
+        // ── DEMOGRAFI ──────────────────────────────────────────────
+        $totalPenduduk   = DB::table('penduduk')->count();
+        $lakiLaki        = DB::table('penduduk')->where('jenis_kelamin', 'L')->count();
+        $perempuan       = DB::table('penduduk')->where('jenis_kelamin', 'P')->count();
+        $kepalaKeluarga  = DB::table('penduduk')->where('status_dalam_keluarga', 'Kepala Keluarga')->count();
+
         $demografi = [
-            'total_penduduk' => 8542,
-            'laki_laki' => 4321,
-            'perempuan' => 4221,
-            'kepala_keluarga' => 2156,
-            'kepadatan' => '683 jiwa/km²',
+            'total_penduduk'  => $totalPenduduk,
+            'laki_laki'       => $lakiLaki,
+            'perempuan'       => $perempuan,
+            'kepala_keluarga' => $kepalaKeluarga,
+            'kepadatan'       => $totalPenduduk > 0
+                ? number_format($totalPenduduk / max($kepalaKeluarga, 1), 2) . ' jiwa/KK'
+                : '0 jiwa/KK',
         ];
 
-        // Data Penduduk Berdasarkan Usia
-        $usia = [
-            ['range' => '0-4 tahun', 'laki' => 342, 'perempuan' => 318, 'total' => 660],
-            ['range' => '5-9 tahun', 'laki' => 389, 'perempuan' => 367, 'total' => 756],
-            ['range' => '10-14 tahun', 'laki' => 412, 'perempuan' => 398, 'total' => 810],
-            ['range' => '15-19 tahun', 'laki' => 445, 'perempuan' => 434, 'total' => 879],
-            ['range' => '20-24 tahun', 'laki' => 468, 'perempuan' => 456, 'total' => 924],
-            ['range' => '25-29 tahun', 'laki' => 421, 'perempuan' => 412, 'total' => 833],
-            ['range' => '30-34 tahun', 'laki' => 398, 'perempuan' => 387, 'total' => 785],
-            ['range' => '35-39 tahun', 'laki' => 367, 'perempuan' => 358, 'total' => 725],
-            ['range' => '40-44 tahun', 'laki' => 334, 'perempuan' => 325, 'total' => 659],
-            ['range' => '45-49 tahun', 'laki' => 298, 'perempuan' => 289, 'total' => 587],
-            ['range' => '50-54 tahun', 'laki' => 256, 'perempuan' => 248, 'total' => 504],
-            ['range' => '55-59 tahun', 'laki' => 213, 'perempuan' => 207, 'total' => 420],
-            ['range' => '60-64 tahun', 'laki' => 178, 'perempuan' => 172, 'total' => 350],
-            ['range' => '65+ tahun', 'laki' => 200, 'perempuan' => 250, 'total' => 450],
+        // ── KELOMPOK USIA ──────────────────────────────────────────
+        // Kelompok: 0-14, 15-24, 25-54, 55-64, 65+
+        $usiaGroups = [
+            ['range' => '0-14',  'min' => 0,  'max' => 14],
+            ['range' => '15-24', 'min' => 15, 'max' => 24],
+            ['range' => '25-54', 'min' => 25, 'max' => 54],
+            ['range' => '55-64', 'min' => 55, 'max' => 64],
+            ['range' => '65+',   'min' => 65, 'max' => 999],
         ];
 
-        // Data Pendidikan
-        $pendidikan = [
-            ['tingkat' => 'Tidak/Belum Sekolah', 'jumlah' => 1234, 'persentase' => 14.4],
-            ['tingkat' => 'Belum Tamat SD/Sederajat', 'jumlah' => 856, 'persentase' => 10.0],
-            ['tingkat' => 'Tamat SD/Sederajat', 'jumlah' => 1987, 'persentase' => 23.3],
-            ['tingkat' => 'SLTP/Sederajat', 'jumlah' => 1645, 'persentase' => 19.3],
-            ['tingkat' => 'SLTA/Sederajat', 'jumlah' => 2134, 'persentase' => 25.0],
-            ['tingkat' => 'SarjanaZ', 'jumlah' => 234, 'persentase' => 2.7],
+        $usia = [];
+        foreach ($usiaGroups as $group) {
+            $minDate = Carbon::now()->subYears($group['max'] + 1)->addDay()->format('Y-m-d');
+            $maxDate = Carbon::now()->subYears($group['min'])->format('Y-m-d');
 
-        ];
+            $laki = DB::table('penduduk')
+                ->where('jenis_kelamin', 'L')
+                ->whereBetween('tanggal_lahir', [$minDate, $maxDate])
+                ->count();
 
-        // Data Pekerjaan
-        $pekerjaan = [
-            ['jenis' => 'Petani/Pekebun', 'jumlah' => 2345, 'persentase' => 27.5],
-            ['jenis' => 'Buruh Harian Lepas', 'jumlah' => 1234, 'persentase' => 14.4],
-            ['jenis' => 'Buruh Tani/Perkebunan', 'jumlah' => 987, 'persentase' => 11.6],
-            ['jenis' => 'Wiraswasta', 'jumlah' => 856, 'persentase' => 10.0],
-            ['jenis' => 'Karyawan Swasta', 'jumlah' => 645, 'persentase' => 7.6],
-            ['jenis' => 'Mengurus Rumah Tangga', 'jumlah' => 567, 'persentase' => 6.6],
-            ['jenis' => 'Pelajar/Mahasiswa', 'jumlah' => 789, 'persentase' => 9.2],
-            ['jenis' => 'Pedagang', 'jumlah' => 423, 'persentase' => 5.0],
-            ['jenis' => 'PNS', 'jumlah' => 234, 'persentase' => 2.7],
-            ['jenis' => 'Pensiunan', 'jumlah' => 156, 'persentase' => 1.8],
-            ['jenis' => 'Lainnya', 'jumlah' => 306, 'persentase' => 3.6],
-        ];
+            $pr = DB::table('penduduk')
+                ->where('jenis_kelamin', 'P')
+                ->whereBetween('tanggal_lahir', [$minDate, $maxDate])
+                ->count();
 
-        // Data Agama
-        $agama = [
-            ['nama' => 'Islam', 'jumlah' => 8234, 'persentase' => 96.4],
-            ['nama' => 'Kristen', 'jumlah' => 178, 'persentase' => 2.1],
-            ['nama' => 'Katolik', 'jumlah' => 89, 'persentase' => 1.0],
-            ['nama' => 'Hindu', 'jumlah' => 23, 'persentase' => 0.3],
-            ['nama' => 'Buddha', 'jumlah' => 12, 'persentase' => 0.1],
-            ['nama' => 'Lainnya', 'jumlah' => 6, 'persentase' => 0.1],
-        ];
+            $usia[] = [
+                'range'     => $group['range'],
+                'laki'      => $laki,
+                'perempuan' => $pr,
+            ];
+        }
 
-        // Data Perkawinan
-        $perkawinan = [
-            ['status' => 'Belum Kawin', 'jumlah' => 3456, 'persentase' => 40.5],
-            ['status' => 'Kawin', 'jumlah' => 4567, 'persentase' => 53.5],
-            ['status' => 'Cerai Hidup', 'jumlah' => 234, 'persentase' => 2.7],
-            ['status' => 'Cerai Mati', 'jumlah' => 285, 'persentase' => 3.3],
-        ];
+        // ── PENDIDIKAN ────────────────────────────────────────────
+        $pendidikanRaw = DB::table('penduduk')
+            ->select('pendidikan', DB::raw('COUNT(*) as jumlah'))
+            ->groupBy('pendidikan')
+            ->orderByDesc('jumlah')
+            ->get();
 
-        // Fasilitas Umum
-        $fasilitas = [
-            'pendidikan' => [
-                ['nama' => 'TK/PAUD', 'jumlah' => 5],
-                ['nama' => 'SD/Sederajat', 'jumlah' => 3],
-                ['nama' => 'SMP/Sederajat', 'jumlah' => 2],
-                ['nama' => 'SMA/Sederajat', 'jumlah' => 1],
-            ],
-            'kesehatan' => [
-                ['nama' => 'Puskesmas', 'jumlah' => 1],
-                ['nama' => 'Posyandu', 'jumlah' => 8],
-                ['nama' => 'Polindes', 'jumlah' => 1],
-                ['nama' => 'Apotek', 'jumlah' => 2],
-            ],
-            'peribadatan' => [
-                ['nama' => 'Masjid', 'jumlah' => 12],
-                ['nama' => 'Musholla', 'jumlah' => 25],
-                ['nama' => 'Gereja', 'jumlah' => 2],
-            ],
-            'ekonomi' => [
-                ['nama' => 'Pasar Desa', 'jumlah' => 1],
-                ['nama' => 'Toko/Warung', 'jumlah' => 45],
-                ['nama' => 'Bank/ATM', 'jumlah' => 2],
-                ['nama' => 'Koperasi', 'jumlah' => 3],
-            ],
-        ];
+        $pendidikan = $pendidikanRaw->map(fn($row) => [
+            'tingkat' => $row->pendidikan,
+            'jumlah'  => (int) $row->jumlah,
+        ])->toArray();
 
-        // Potensi Desa
-        $potensi = [
-            'pertanian' => [
-                ['komoditas' => 'Padi', 'luas' => '450 Ha', 'produksi' => '2,700 ton/tahun'],
-                ['komoditas' => 'Jagung', 'luas' => '120 Ha', 'produksi' => '600 ton/tahun'],
-                ['komoditas' => 'Sayuran', 'luas' => '80 Ha', 'produksi' => '800 ton/tahun'],
-            ],
-            'perkebunan' => [
-                ['komoditas' => 'Kelapa', 'luas' => '200 Ha', 'produksi' => '400 ton/tahun'],
-                ['komoditas' => 'Kopi', 'luas' => '150 Ha', 'produksi' => '150 ton/tahun'],
-                ['komoditas' => 'Cengkeh', 'luas' => '100 Ha', 'produksi' => '50 ton/tahun'],
-            ],
-            'peternakan' => [
-                ['jenis' => 'Sapi', 'populasi' => '234 ekor'],
-                ['jenis' => 'Kambing', 'populasi' => '567 ekor'],
-                ['jenis' => 'Ayam', 'populasi' => '3,450 ekor'],
-            ],
-        ];
+        // ── PEKERJAAN ─────────────────────────────────────────────
+        $pekerjaanRaw = DB::table('penduduk')
+            ->select('pekerjaan', DB::raw('COUNT(*) as jumlah'))
+            ->groupBy('pekerjaan')
+            ->orderByDesc('jumlah')
+            ->limit(10) // tampilkan 10 pekerjaan terbesar
+            ->get();
+
+        $pekerjaan = $pekerjaanRaw->map(fn($row) => [
+            'jenis'  => $row->pekerjaan,
+            'jumlah' => (int) $row->jumlah,
+        ])->toArray();
+
+        // ── AGAMA ─────────────────────────────────────────────────
+        $agamaRaw = DB::table('penduduk')
+            ->select('agama', DB::raw('COUNT(*) as jumlah'))
+            ->groupBy('agama')
+            ->orderByDesc('jumlah')
+            ->get();
+
+        $agama = $agamaRaw->map(fn($row) => [
+            'nama'       => $row->agama,
+            'jumlah'     => (int) $row->jumlah,
+            'persentase' => $totalPenduduk > 0
+                ? round(($row->jumlah / $totalPenduduk) * 100, 1)
+                : 0,
+        ])->toArray();
+
+        // ── STATUS PERKAWINAN ─────────────────────────────────────
+        $perkawinanRaw = DB::table('penduduk')
+            ->select('status_perkawinan', DB::raw('COUNT(*) as jumlah'))
+            ->groupBy('status_perkawinan')
+            ->orderByDesc('jumlah')
+            ->get();
+
+        $perkawinan = $perkawinanRaw->map(fn($row) => [
+            'status'     => $row->status_perkawinan,
+            'jumlah'     => (int) $row->jumlah,
+            'persentase' => $totalPenduduk > 0
+                ? round(($row->jumlah / $totalPenduduk) * 100, 1)
+                : 0,
+        ])->toArray();
+
+        // ── STATUS DALAM KELUARGA (BARU) ──────────────────────────
+        $statusKeluargaRaw = DB::table('penduduk')
+            ->select('status_dalam_keluarga as status', DB::raw('COUNT(*) as jumlah'))
+            ->groupBy('status_dalam_keluarga')
+            ->orderByDesc('jumlah')
+            ->get();
+
+        $statusKeluarga = $statusKeluargaRaw->map(fn($row) => [
+            'status'     => $row->status ?: 'Tidak Diketahui',
+            'jumlah'     => (int) $row->jumlah,
+            'persentase' => $totalPenduduk > 0
+                ? round(($row->jumlah / $totalPenduduk) * 100, 1)
+                : 0,
+        ])->toArray();
+
+        // ── KEWARGANEGARAAN (BARU) ────────────────────────────────
+        $kewarganegaraanRaw = DB::table('penduduk')
+            ->select('kewarganegaraan as status', DB::raw('COUNT(*) as jumlah'))
+            ->groupBy('kewarganegaraan')
+            ->orderByDesc('jumlah')
+            ->get();
+
+        $kewarganegaraan = $kewarganegaraanRaw->map(fn($row) => [
+            'status'     => $row->status,
+            'jumlah'     => (int) $row->jumlah,
+            'persentase' => $totalPenduduk > 0
+                ? round(($row->jumlah / $totalPenduduk) * 100, 1)
+                : 0,
+        ])->toArray();
+
+        // ── DATA RT & RW ───────────────────────────────────────────
+        $rwList = DB::table('rw')
+            ->orderBy('nomor_rw')
+            ->get();
+
+        $rtList = DB::table('rt')
+            ->join('rw', 'rt.rw_id', '=', 'rw.id')
+            ->select(
+                'rt.*',
+                'rw.nomor_rw'
+            )
+            ->orderBy('rw.nomor_rw')
+            ->orderBy('rt.nomor_rt')
+            ->get();
+
+        // Hitung jumlah penduduk per RT dari tabel penduduk
+        $pendudukPerRt = DB::table('penduduk')
+            ->select('rt', 'rw', DB::raw('COUNT(*) as jumlah'))
+            ->groupBy('rt', 'rw')
+            ->get()
+            ->keyBy(fn($row) => $row->rw . '-' . $row->rt);
+
+        // Hitung KK per RT
+        $kkPerRt = DB::table('penduduk')
+            ->where('status_dalam_keluarga', 'Kepala Keluarga')
+            ->select('rt', 'rw', DB::raw('COUNT(*) as jumlah'))
+            ->groupBy('rt', 'rw')
+            ->get()
+            ->keyBy(fn($row) => $row->rw . '-' . $row->rt);
+
+        // Gabungkan data RT dengan data penduduk aktual
+        $rtData = $rtList->map(function ($rt) use ($pendudukPerRt, $kkPerRt) {
+            $key            = $rt->nomor_rw . '-' . $rt->nomor_rt;
+            $jumlahPenduduk = $pendudukPerRt[$key]->jumlah ?? $rt->jumlah_penduduk;
+            $jumlahKk       = $kkPerRt[$key]->jumlah    ?? $rt->jumlah_kk;
+
+            return [
+                'id'              => $rt->id,
+                'nomor_rt'        => $rt->nomor_rt,
+                'nomor_rw'        => $rt->nomor_rw,
+                'nama_ketua'      => $rt->nama_ketua,
+                'no_hp'           => $rt->no_hp,
+                'alamat'          => $rt->alamat,
+                'jumlah_penduduk' => $jumlahPenduduk,
+                'jumlah_kk'       => $jumlahKk,
+            ];
+        })->toArray();
+
+        $rwData = $rwList->map(function ($rw) use ($rtData) {
+            // Hitung total penduduk & KK per RW dari data RT
+            $rtDiRw = array_filter($rtData, fn($rt) => $rt['nomor_rw'] === $rw->nomor_rw);
+
+            return [
+                'id'              => $rw->id,
+                'nomor_rw'        => $rw->nomor_rw,
+                'nama_ketua'      => $rw->nama_ketua,
+                'no_hp'           => $rw->no_hp,
+                'alamat'          => $rw->alamat,
+                'jumlah_penduduk' => array_sum(array_column($rtDiRw, 'jumlah_penduduk')) ?: $rw->jumlah_penduduk,
+                'jumlah_kk'       => array_sum(array_column($rtDiRw, 'jumlah_kk'))       ?: $rw->jumlah_kk,
+                'jumlah_rt'       => count($rtDiRw),
+            ];
+        })->toArray();
 
         return view('data', compact(
             'demografi',
@@ -132,8 +214,10 @@ class DataController extends Controller
             'pekerjaan',
             'agama',
             'perkawinan',
-            'fasilitas',
-            'potensi'
+            'statusKeluarga', // TAMBAHAN VARIABEL BARU
+            'kewarganegaraan', // TAMBAHAN VARIABEL BARU
+            'rwData',
+            'rtData'
         ));
     }
 }
