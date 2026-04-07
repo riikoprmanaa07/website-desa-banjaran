@@ -195,6 +195,17 @@
 
                 </div>
             </div>
+            <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Keterangan Tambahan <span class="text-gray-400 font-normal italic">(Opsional)</span>
+                    </label>
+                    <textarea name="keterangan" rows="2"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold"
+                        placeholder="Tambahkan keterangan pendukung di sini...">{{ old('keterangan', $surat->keterangan) }}</textarea>
+                    @error('keterangan')
+                        <p class="mt-1 text-sm text-red-600 font-medium">{{ $message }}</p>
+                    @enderror
+                </div>
 
             <!-- Buttons -->
             <div class="flex items-center justify-between pt-6 border-t border-gray-200">

@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen antialiased selection:bg-desa-gold selection:text-white">
@@ -102,9 +104,6 @@
                 <a href="{{ route('galeri') }}" class="block px-4 py-3 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white rounded-lg transition">Galeri</a>
                 <a href="{{ route('services') }}" class="block px-4 py-3 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white rounded-lg transition">Layanan</a>
                 
-                <div class="pt-4 mt-4 border-t border-gray-800">
-                    <a href="{{ route('admin.login') }}" class="block text-center w-full px-4 py-3 text-sm font-medium border border-desa-gold text-desa-gold rounded-lg hover:bg-desa-gold hover:text-desa-dark transition">Login Admin</a>
-                </div>
             </div>
         </div>
     </nav>
@@ -159,12 +158,6 @@
                                 Jl. Raya Bangsri - Srikandang KM. 03, Desa Banjaran, Kec. Bangsri<br>
                                 Kab. Jepara, Jawa Tengah 59453
                             </span>
-                        </li>
-                        <li class="flex items-center gap-3 group">
-                            <div class="p-2 bg-white/5 rounded-lg group-hover:bg-desa-gold/20 transition">
-                                <svg class="w-4 h-4 text-desa-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                            </div>
-                            <span>(0291) 123456</span>
                         </li>
                         <li class="flex items-center gap-3 group">
                             <div class="p-2 bg-white/5 rounded-lg group-hover:bg-desa-gold/20 transition">
@@ -234,6 +227,15 @@
         });
     </script>
     
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800, // Durasi animasi
+            once: true,    // Hanya di-scroll 1x
+            offset: 50     // Jarak kemunculan
+        });
+    </script>
+
     @stack('scripts')
 </body>
 </html>

@@ -11,19 +11,23 @@ use Illuminate\Http\Request;
 class RTController extends Controller
 {
     public function index(Request $request)
-    {
-        $query = RT::with('rw');
+{
+    $query = RT::with('rw');
 
-        // Filter berdasarkan RW
-        if ($request->filled('rw_id')) {
-            $query->where('rw_id', $request->rw_id);
-        }
-
-        $rt = $query->latest()->paginate(20);
-        $rwList = RW::orderBy('nomor_rw')->get();
-
-        return view('admin.rt.index', compact('rt', 'rwList'));
+    // Filter berdasarkan RW
+    if ($request->filled('rw_id')) {
+        $query->where('rw_id', $request->rw_id);
     }
+
+    // GANTI latest() dengan baris di bawah ini:
+    $rt = $query->orderBy('rw_id', 'asc')      
+                ->orderBy('nomor_rt', 'asc')  
+                ->paginate(20);
+
+    $rwList = RW::orderBy('nomor_rw')->get();
+
+    return view('admin.rt.index', compact('rt', 'rwList'));
+}
 
     public function create()
     {

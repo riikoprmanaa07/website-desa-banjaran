@@ -39,13 +39,10 @@ Route::prefix('admin')->name('admin.')->middleware('admin.auth')->group(function
     Route::resource('surat', SuratController::class);
     Route::post('surat/{id}/update-status', [SuratController::class, 'updateStatus'])->name('surat.update-status');
     Route::get('surat/{id}/print', [SuratController::class, 'print'])->name('surat.print');
-    Route::get('surat/{surat}/dokumen', function (\App\Models\Surat $surat) {
-        abort_if(!$surat->file_dokumen, 404);
-        $fullPath = storage_path('app/private/' . $surat->file_dokumen);
-        abort_if(!file_exists($fullPath), 404);
-        return response()->file($fullPath);
-    })->name('surat.dokumen');
     Route::patch('surat/{id}/verifikasi', [SuratController::class, 'verifikasi'])->name('surat.verifikasi');
+    
+    // Route Download Dokumen (Sudah Diperbaiki)
+    Route::get('surat/dokumen/{id}/download', [SuratController::class, 'downloadDokumen'])->name('surat.download-dokumen');
 
     // Template Surat
     Route::resource('template-surat', TemplateSuratController::class);
@@ -84,7 +81,12 @@ Route::prefix('admin')->name('admin.')->middleware('admin.auth')->group(function
 
 // ─── Public Routes ───────────────────────────────────────────────────────────
 Route::get('/ajukan-surat', [PengajuanSuratController::class, 'index'])->name('pengajuan.index');
-Route::post('/ajukan-surat', [PengajuanSuratController::class, 'store'])->name('pengajuan.store');
+
+// ✅ PERBAIKAN: Tambahan middleware throttle:3,1 untuk mencegah serangan SPAM
+Route::post('/ajukan-surat', [PengajuanSuratController::class, 'store'])
+    ->name('pengajuan.store')
+    ->middleware('throttle:3,1'); 
+
 Route::get('/ajukan-surat/sukses/{nomor}', [PengajuanSuratController::class, 'sukses'])->name('pengajuan.sukses');
 Route::get('/cek-pengajuan', [PengajuanSuratController::class, 'cek'])->name('pengajuan.cek');
 

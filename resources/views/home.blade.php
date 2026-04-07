@@ -5,12 +5,12 @@
 @section('content')
 
 {{-- ===== HERO SLIDER (DIPERBARUI) ===== --}}
-<section class="relative h-[92vh] min-h-[560px] max-h-[780px] flex items-center overflow-hidden bg-desa-dark -mt-16">
+<<section class="relative h-[92vh] min-h-[560px] max-h-[780px] flex items-center overflow-hidden bg-desa-dark -mt-16">
 
     <div id="slider-container" class="absolute inset-0 z-0">
         @php
             $sliderImages = [
-                'images/bg.png',
+                'images/bg1.jpg',
                 'images/bg2.png'
             ];
         @endphp
@@ -21,28 +21,33 @@
         </div>
         @endforeach
 
-        <div class="absolute inset-0 bg-gradient-to-r from-desa-dark via-desa-dark/75 to-desa-dark/20"></div>
-        <div class="absolute inset-0 bg-gradient-to-t from-desa-dark/50 via-transparent to-transparent"></div>
+        {{-- PERUBAHAN DI SINI: Gradient ditarik lebih jauh ke tengah untuk melindungi teks --}}
+        <div class="absolute inset-0 bg-gradient-to-r from-desa-dark/95 via-desa-dark/80 via-30% to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-desa-dark/40 via-transparent to-transparent"></div>
     </div>
 
     <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-2xl">
+        {{-- Animasi fade-up untuk teks Hero --}}
+        <div class="max-w-2xl" data-aos="fade-up" data-aos-duration="1000">
             <span class="inline-block px-3 py-1 bg-desa-gold/20 text-desa-gold text-xs font-bold tracking-[0.2em] uppercase mb-6 rounded">Portal Resmi</span>
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl text-white font-extrabold leading-[1.08] tracking-tight mb-4">
+            
+            {{-- Tambahan drop-shadow-lg agar teks lebih pop-out --}}
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl text-white font-extrabold leading-[1.08] tracking-tight mb-4 drop-shadow-lg">
                 Desa Banjaran<br>
                 <span class="text-desa-gold">Mandiri & Sejahtera</span>
             </h1>
-            <p class="text-gray-300 text-xs sm:text-sm lg:text-base leading-relaxed mb-7 max-w-lg">
+            
+            <p class="text-gray-200 text-xs sm:text-sm lg:text-base leading-relaxed mb-7 max-w-lg drop-shadow-md">
                 Mewujudkan tata kelola pemerintahan desa yang transparan, akuntabel, dan mengutamakan pelayanan prima bagi masyarakat.
             </p>
 
             <div class="flex flex-wrap gap-3">
-                <a href="#sambutan"
+                <a href="{{ route('home') }}"
                    class="inline-flex items-center gap-2 bg-desa-gold hover:bg-yellow-500 text-desa-dark px-7 py-3 rounded-lg font-bold text-sm uppercase tracking-wider transition-all shadow-lg hover:-translate-y-0.5">
                     Jelajahi Desa
                 </a>
                 <a href="{{ route('services') }}"
-                   class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white border border-white/25 px-7 py-3 rounded-lg font-bold text-sm uppercase tracking-wider transition-all hover:-translate-y-0.5">
+                   class="inline-flex items-center gap-2 bg-black/30 hover:bg-black/50 backdrop-blur-md text-white border border-white/25 px-7 py-3 rounded-lg font-bold text-sm uppercase tracking-wider transition-all hover:-translate-y-0.5 shadow-lg">
                     Layanan Warga
                 </a>
             </div>
@@ -58,8 +63,8 @@
         <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-6 md:p-10 overflow-hidden relative">
             <div class="grid lg:grid-cols-5 gap-8 items-center relative z-10">
 
-                {{-- FOTO --}}
-                <div class="lg:col-span-2 relative">
+                {{-- FOTO: Animasi dari kiri --}}
+                <div class="lg:col-span-2 relative" data-aos="fade-right">
                     <div class="aspect-[3/4] max-h-80 lg:max-h-96 rounded-2xl overflow-hidden shadow-lg bg-gray-200 mx-auto" style="max-width: 260px;">
                         @if(!empty($kepalaDesa) && $kepalaDesa->foto)
                             <img src="{{ asset('storage/' . $kepalaDesa->foto) }}"
@@ -73,8 +78,8 @@
                     </div>
                 </div>
 
-                {{-- KONTEN --}}
-                <div class="lg:col-span-3 space-y-4">
+                {{-- KONTEN: Animasi dari kanan --}}
+                <div class="lg:col-span-3 space-y-4" data-aos="fade-left">
                     <div>
                         <span class="text-desa-gold font-bold uppercase tracking-widest text-xs">
                             Pesan Pimpinan
@@ -121,8 +126,8 @@
 <section class="py-14 bg-gray-50 pt-0">
     <div class="max-w-7xl mx-auto px-6 lg:px-8 space-y-8">
         
-        {{-- VISI --}}
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 md:p-10 text-center relative overflow-hidden group hover:shadow-xl transition-all duration-500">
+        {{-- VISI: Efek membesar (zoom-in) --}}
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 md:p-10 text-center relative overflow-hidden group hover:shadow-xl transition-all duration-500" data-aos="zoom-in">
             <div class="absolute top-0 right-0 w-48 h-48 bg-desa-gold/5 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110"></div>
             <div class="relative z-10 max-w-3xl mx-auto">
                 <h2 class="text-2xl font-extrabold mb-3 text-desa-dark">Visi</h2>
@@ -132,8 +137,8 @@
             </div>
         </div>
 
-        {{-- MISI --}}
-        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden flex flex-col md:flex-row">
+        {{-- MISI: Animasi muncul dari bawah --}}
+        <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden flex flex-col md:flex-row" data-aos="fade-up">
             <div class="bg-desa-dark text-white p-8 md:w-1/3 flex flex-col justify-center relative overflow-hidden">
                 <div class="absolute inset-0 bg-desa-gold/10"></div>
                 <div class="relative z-10">
@@ -147,7 +152,8 @@
 
             <div class="p-8 md:w-2/3 bg-white">
                 <div class="grid gap-6">
-                    <div class="flex gap-4 items-start group">
+                    {{-- List Misi dengan delay bergantian --}}
+                    <div class="flex gap-4 items-start group" data-aos="fade-up" data-aos-delay="100">
                         <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-desa-gold font-bold text-base flex-shrink-0 group-hover:bg-desa-gold group-hover:text-white transition-colors">1</div>
                         <div>
                             <h4 class="text-sm font-bold text-desa-dark mb-1">Tata Kelola Pemerintahan</h4>
@@ -155,7 +161,7 @@
                         </div>
                     </div>
 
-                    <div class="flex gap-4 items-start group">
+                    <div class="flex gap-4 items-start group" data-aos="fade-up" data-aos-delay="200">
                         <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-desa-gold font-bold text-base flex-shrink-0 group-hover:bg-desa-gold group-hover:text-white transition-colors">2</div>
                         <div>
                             <h4 class="text-sm font-bold text-desa-dark mb-1">Ekonomi & Kesejahteraan</h4>
@@ -163,7 +169,7 @@
                         </div>
                     </div>
 
-                    <div class="flex gap-4 items-start group">
+                    <div class="flex gap-4 items-start group" data-aos="fade-up" data-aos-delay="300">
                         <div class="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-desa-gold font-bold text-base flex-shrink-0 group-hover:bg-desa-gold group-hover:text-white transition-colors">3</div>
                         <div>
                             <h4 class="text-sm font-bold text-desa-dark mb-1">Sosial & Budaya</h4>
@@ -181,8 +187,8 @@
 <section class="py-14 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {{-- Header --}}
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8">
+        {{-- Header: Animasi dari kiri --}}
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8" data-aos="fade-right">
             <div>
                 <span class="text-desa-gold font-bold uppercase tracking-widest text-xs block mb-1">
                     Informasi Terbaru
@@ -202,8 +208,11 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
             @if(!empty($latestNews))
-                @foreach($latestNews as $news)
-                <article class="group bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col">
+                {{-- Modifikasi foreach untuk mendapatkan index demi delay animasi --}}
+                @foreach($latestNews as $index => $news)
+                <article class="group bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col"
+                         data-aos="fade-up" 
+                         data-aos-delay="{{ $index * 150 }}">
 
                     {{-- Gambar --}}
                     <div class="relative h-44 sm:h-48 overflow-hidden flex-shrink-0 bg-gray-100">
@@ -258,8 +267,8 @@
 <section class="py-14 bg-gray-50">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
         
-        {{-- Section Header --}}
-        <div class="text-center mb-10">
+        {{-- Section Header: Animasi muncul dari bawah --}}
+        <div class="text-center mb-10" data-aos="fade-up">
             <span class="text-desa-gold font-bold uppercase tracking-widest text-xs block mb-1">Temukan Kami</span>
             <h2 class="text-2xl font-extrabold text-desa-dark">Lokasi Desa Banjaran</h2>
             <p class="mt-2 text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">
@@ -270,10 +279,10 @@
 
         <div class="grid lg:grid-cols-3 gap-6 items-stretch">
 
-            {{-- Info Cards --}}
+            {{-- Info Cards: Animasi dari kiri bergantian --}}
             <div class="flex flex-col gap-4">
 
-                <div class="bg-white rounded-xl border border-gray-100 shadow-md p-5 flex items-start gap-4 hover:shadow-lg transition-shadow">
+                <div class="bg-white rounded-xl border border-gray-100 shadow-md p-5 flex items-start gap-4 hover:shadow-lg transition-shadow" data-aos="fade-right" data-aos-delay="100">
                     <div class="w-10 h-10 bg-desa-gold/10 rounded-xl flex items-center justify-center flex-shrink-0">
                         <svg class="w-5 h-5 text-desa-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
@@ -286,20 +295,21 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl border border-gray-100 shadow-md p-5 flex items-start gap-4 hover:shadow-lg transition-shadow">
-                    <div class="w-10 h-10 bg-desa-gold/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <svg class="w-5 h-5 text-desa-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h4 class="text-xs font-bold text-desa-dark uppercase tracking-wide mb-1">Telepon</h4>
-                        <p class="text-gray-500 text-sm">(0291) 123456</p>
-                        <p class="text-gray-400 text-xs mt-0.5">Senin – Jumat, 08.00–15.00 WIB</p>
-                    </div>
+                <div class="bg-white rounded-xl border border-gray-100 shadow-md p-5 flex items-start gap-4 hover:shadow-lg transition-shadow" data-aos="fade-right" data-aos-delay="200">
+                <div class="w-10 h-10 bg-desa-gold/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-desa-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-desa-dark uppercase tracking-wide mb-1">Jam Pelayanan</h4>
+                    <p class="text-gray-400 text-xs mt-0.5">Senin – Kamis, 08.00–15.00 WIB</p>
+                    <p class="text-gray-400 text-xs mt-0.5">Jumat, 08.00–14.00 WIB</p>
+                    <p class="text-gray-400 text-xs mt-0.5">Sabtu - Minggu, Libur</p>
+                </div>
                 </div>
 
-                <div class="bg-white rounded-xl border border-gray-100 shadow-md p-5 flex items-start gap-4 hover:shadow-lg transition-shadow">
+                <div class="bg-white rounded-xl border border-gray-100 shadow-md p-5 flex items-start gap-4 hover:shadow-lg transition-shadow" data-aos="fade-right" data-aos-delay="300">
                     <div class="w-10 h-10 bg-desa-gold/10 rounded-xl flex items-center justify-center flex-shrink-0">
                         <svg class="w-5 h-5 text-desa-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -307,13 +317,14 @@
                     </div>
                     <div>
                         <h4 class="text-xs font-bold text-desa-dark uppercase tracking-wide mb-1">Email</h4>
-                        <p class="text-gray-500 text-sm">desabanjaran@jepara.go.id</p>
+                        <p class="text-gray-500 text-sm">desabanjaran1@gmail.com</p>
                     </div>
                 </div>
 
                 {{-- Tombol Google Maps --}}
                 <a href="https://www.google.com/maps/search/Desa+Banjaran+Bangsri+Jepara" 
                    target="_blank" rel="noopener noreferrer"
+                   data-aos="fade-up" data-aos-delay="400"
                    class="mt-auto bg-desa-dark hover:bg-desa-gray text-white font-bold text-sm uppercase tracking-wider px-6 py-3 rounded-xl flex items-center justify-center gap-3 transition-colors shadow-md group">
                     <svg class="w-4 h-4 text-desa-gold group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
@@ -322,8 +333,8 @@
                 </a>
             </div>
 
-            {{-- Embed Google Maps --}}
-            <div class="lg:col-span-2 rounded-2xl overflow-hidden shadow-xl border border-gray-100 min-h-[360px]">
+            {{-- Embed Google Maps: Animasi dari kanan --}}
+            <div class="lg:col-span-2 rounded-2xl overflow-hidden shadow-xl border border-gray-100 min-h-[360px]" data-aos="fade-left">
                 <iframe 
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.4!2d110.7168!3d-6.5318!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708f5c5c5c5c5b%3A0x1234567890abcdef!2sDesa%20Banjaran%2C%20Bangsri%2C%20Jepara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
                     width="100%" 

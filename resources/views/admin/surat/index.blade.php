@@ -6,7 +6,6 @@
 
 @section('content')
 <div class="bg-white rounded-lg shadow-md">
-    <!-- Header -->
     <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
         <div>
             <h3 class="text-lg font-bold text-gray-800">Daftar Surat</h3>
@@ -20,24 +19,20 @@
         </a>
     </div>
 
-    <!-- Notifikasi -->
     @if(session('success'))
     <div class="mx-6 mt-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
         {{ session('success') }}
     </div>
     @endif
 
-    <!-- Search & Filter -->
     <div class="px-6 py-4 bg-gray-50 border-b border-gray-200">
         <form action="{{ route('admin.surat.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <!-- Search — ✅ PERBAIKAN: placeholder diperjelas -->
             <div class="md:col-span-2">
                 <input type="text" name="search" value="{{ request('search') }}"
                     placeholder="Cari nomor surat, nama, atau NIK..."
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold focus:border-transparent">
             </div>
 
-            <!-- Filter Status -->
             <select name="status" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold">
                 <option value="">Semua Status</option>
                 <option value="Pending"  {{ request('status') == 'Pending'  ? 'selected' : '' }}>Pending</option>
@@ -46,7 +41,6 @@
                 <option value="Ditolak"  {{ request('status') == 'Ditolak'  ? 'selected' : '' }}>Ditolak</option>
             </select>
 
-            <!-- Filter Jenis -->
             <select name="jenis" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-desa-gold">
                 <option value="">Semua Jenis</option>
                 <option value="Surat Keterangan Domisili"    {{ request('jenis') == 'Surat Keterangan Domisili'    ? 'selected' : '' }}>Surat Keterangan Domisili</option>
@@ -55,13 +49,12 @@
                 <option value="Surat Keterangan Tidak Mampu" {{ request('jenis') == 'Surat Keterangan Tidak Mampu' ? 'selected' : '' }}>Surat Keterangan Tidak Mampu</option>
             </select>
 
-            <!-- Buttons -->
             <div class="flex gap-2">
                 <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition">
                     Cari
                 </button>
                 @if(request()->hasAny(['search', 'status', 'jenis']))
-                <a href="{{ route('admin.surat.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium transition">
+                <a href="{{ route('admin.surat.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium transition text-center flex items-center justify-center">
                     Reset
                 </a>
                 @endif
@@ -69,7 +62,6 @@
         </form>
     </div>
 
-    <!-- ✅ PERBAIKAN: Statistics Cards pakai $stats dari controller, bukan dari paginated collection -->
     <div class="px-6 py-4 bg-gray-50 border-b grid grid-cols-4 gap-4">
         <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-3 text-center">
             <p class="text-2xl font-bold text-yellow-800">{{ $stats['pending'] }}</p>
@@ -89,7 +81,6 @@
         </div>
     </div>
 
-    <!-- Table -->
     <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
@@ -131,26 +122,29 @@
                         </span>
                     </td>
 
-                    {{-- Kolom Dokumen --}}
+                    {{-- Kolom Dokumen (DIUBAH) --}}
                     <td class="px-6 py-4 whitespace-nowrap">
-                        @if($item->file_dokumen)
-                            <a href="{{ route('admin.surat.dokumen', $item->id) }}" target="_blank"
-                               class="inline-flex items-center gap-1 px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-200 transition">
+                        @if($item->dokumen && $item->dokumen->count() > 0)
+                            <a href="{{ route('admin.surat.show', $item->id) }}"
+                               class="inline-flex items-center gap-1 px-3 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-medium rounded-lg border border-blue-200 transition"
+                               title="Lihat dokumen di halaman detail">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                 </svg>
-                                Lihat {{ $item->jenis_dokumen }}
+                                {{ $item->dokumen->count() }} Berkas
                             </a>
                         @else
-                            <span class="text-xs text-gray-400 italic">Tidak ada</span>
+                            <span class="text-xs text-gray-400 italic flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                Tidak ada
+                            </span>
                         @endif
                     </td>
 
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <div class="flex items-center justify-end space-x-2">
 
-                            <!-- Quick Status Update -->
                             @if(!in_array($item->status, ['Selesai', 'Ditolak']))
                             <div class="relative group">
                                 <button class="text-purple-600 hover:text-purple-900" title="Update Status">
@@ -169,7 +163,6 @@
                             </div>
                             @endif
 
-                            <!-- ✅ TAMBAHAN: Tombol cetak langsung dari list jika sudah Selesai -->
                             @if($item->status == 'Selesai')
                             <a href="{{ route('admin.surat.print', $item->id) }}"
                                class="text-green-600 hover:text-green-900" title="Cetak PDF">
@@ -179,7 +172,6 @@
                             </a>
                             @endif
 
-                            <!-- View -->
                             <a href="{{ route('admin.surat.show', $item->id) }}" class="text-blue-600 hover:text-blue-900" title="Lihat Detail">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -187,14 +179,12 @@
                                 </svg>
                             </a>
 
-                            <!-- Edit -->
                             <a href="{{ route('admin.surat.edit', $item->id) }}" class="text-yellow-600 hover:text-yellow-900" title="Edit">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                 </svg>
                             </a>
 
-                            <!-- Delete -->
                             <form action="{{ route('admin.surat.destroy', $item->id) }}" method="POST" class="inline"
                                 onsubmit="return confirm('Yakin ingin menghapus surat {{ $item->nomor_surat }}?\n\nData yang sudah dihapus tidak dapat dikembalikan!')">
                                 @csrf
@@ -225,10 +215,9 @@
         </table>
     </div>
 
-    <!-- Pagination -->
     @if($surat->hasPages())
     <div class="px-6 py-4 border-t border-gray-200">
-        {{ $surat->appends(request()->query())->links() }} {{-- ✅ PERBAIKAN: appends agar filter tidak hilang saat pindah halaman --}}
+        {{ $surat->appends(request()->query())->links() }} 
     </div>
     @endif
 </div>

@@ -10,10 +10,14 @@ use Illuminate\Http\Request;
 class RWController extends Controller
 {
     public function index()
-    {
-        $rw = RW::withCount('rt')->latest()->paginate(20);
-        return view('admin.rw.index', compact('rw'));
-    }
+{
+    // Ganti latest() dengan orderBy('nomor_rw', 'asc')
+    $rw = RW::withCount('rt')
+            ->orderBy('nomor_rw', 'asc') 
+            ->paginate(20);
+
+    return view('admin.rw.index', compact('rw'));
+}
 
     public function create()
     {

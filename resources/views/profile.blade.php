@@ -5,14 +5,22 @@
 @section('content')
 
 {{-- Hero --}}
-<section class="bg-desa-dark text-white pt-32 pb-20 relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-64 h-64 bg-desa-gold/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-    <div class="absolute bottom-0 left-0 w-48 h-48 bg-desa-gold/5 rounded-full -ml-12 -mb-12 blur-2xl"></div>
+<section class="text-white pt-32 pb-20 relative overflow-hidden bg-gray-900">
 
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
-       
+    <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/bg.png') }}');"></div>
+        
+        <div class="absolute inset-0 bg-desa-dark/75"></div>
+    </div>
+
+    <div class="absolute top-0 right-0 w-64 h-64 bg-desa-gold/10 rounded-full -mr-16 -mt-16 blur-3xl z-10"></div>
+    <div class="absolute bottom-0 left-0 w-48 h-48 bg-desa-gold/5 rounded-full -ml-12 -mb-12 blur-2xl z-10"></div>
+
+    {{-- TAMBAHAN AOS: zoom-in untuk teks hero --}}
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-20 text-center" data-aos="zoom-in" data-aos-duration="1000">
+        
         <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Struktur Desa Banjaran</h1>
-        <p class="text-gray-400 text-base max-w-xl mx-auto">
+        <p class="text-gray-200 text-base max-w-xl mx-auto">
             Susunan perangkat pemerintahan dan lembaga Desa Banjaran, Kec. Bangsri, Kab. Jepara.
         </p>
     </div>
@@ -22,7 +30,8 @@
 <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-6 lg:px-8 space-y-20">
 {{-- perangkat desa --}}
-        <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-10">
+        {{-- TAMBAHAN AOS: fade-up untuk box utama --}}
+        <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-10" data-aos="fade-up">
             <div class="text-center mb-12">
                 <span class="inline-block text-desa-gold text-xs font-bold uppercase tracking-widest mb-2">Pemerintah Desa</span>
                 <h2 class="text-2xl font-extrabold text-desa-dark">Perangkat Desa</h2>
@@ -35,7 +44,8 @@
                 @php $kepala = $struktur->where('urutan', 1)->first(); @endphp
 
                 @if($kepala)
-                <div class="flex justify-center mb-12">
+                {{-- TAMBAHAN AOS: zoom-in untuk Kepala Desa --}}
+                <div class="flex justify-center mb-12" data-aos="zoom-in" data-aos-delay="100">
                     <div class="group text-center">
                         <div class="w-36 mx-auto mb-4">
                             <div class="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300 bg-gray-100">
@@ -68,7 +78,8 @@
                 </div>
 
                 {{-- Divider --}}
-                <div class="flex flex-col items-center mb-8 relative">
+                {{-- TAMBAHAN AOS: fade-in untuk divider --}}
+                <div class="flex flex-col items-center mb-8 relative" data-aos="fade-in" data-aos-delay="200">
                     <div class="w-px h-8 bg-desa-gold/50"></div>
                     
                     <div class="w-full max-w-3xl h-px bg-desa-gold/50 relative">
@@ -89,7 +100,10 @@
             @if($perangkat->count() > 0)
                 <div class="flex flex-wrap justify-center gap-8">
                     @foreach($perangkat as $item)
-                    <div class="w-full sm:w-[calc(50%-2rem)] lg:w-[calc(25%-2rem)] max-w-[200px] group text-center">
+                    {{-- TAMBAHAN AOS: fade-up dengan delay bertahap pakai $loop->iteration --}}
+                    <div class="w-full sm:w-[calc(50%-2rem)] lg:w-[calc(25%-2rem)] max-w-[200px] group text-center" 
+                         data-aos="fade-up" 
+                         data-aos-delay="{{ $loop->iteration * 100 }}">
                         <div class="w-32 mx-auto mb-4">
                             <div class="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300 bg-gray-100">
                                 @if($item->foto)
@@ -130,7 +144,8 @@
         {{-- ══════════════════════════════════
              BAGIAN 2: BPD
         ══════════════════════════════════ --}}
-        <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-10">
+        {{-- TAMBAHAN AOS: fade-up --}}
+        <div class="bg-white rounded-3xl shadow-lg border border-gray-100 p-10" data-aos="fade-up">
             <div class="text-center mb-12">
                 <span class="inline-block text-desa-gold text-xs font-bold uppercase tracking-widest mb-2">Lembaga Desa</span>
                 <h2 class="text-2xl font-extrabold text-desa-dark">Badan Permusyawaratan Desa</h2>
@@ -146,7 +161,8 @@
                 @php $ketuaBpd = $bpd->where('urutan', 1)->first(); @endphp
 
                 @if($ketuaBpd)
-                <div class="flex justify-center mb-12">
+                {{-- TAMBAHAN AOS: zoom-in untuk Ketua BPD --}}
+                <div class="flex justify-center mb-12" data-aos="zoom-in" data-aos-delay="100">
                     <div class="group text-center">
                         <div class="w-36 mx-auto mb-4">
                             <div class="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300 bg-gray-100">
@@ -180,7 +196,8 @@
 
                 {{-- Divider --}}
                 {{-- Garis Penghubung Hierarki --}}
-                <div class="flex flex-col items-center mb-8 relative">
+                {{-- TAMBAHAN AOS: fade-in --}}
+                <div class="flex flex-col items-center mb-8 relative" data-aos="fade-in" data-aos-delay="200">
                     <div class="w-px h-8 bg-desa-gold/50"></div>
                     
                     <div class="w-full max-w-3xl h-px bg-desa-gold/50 relative">
@@ -201,7 +218,10 @@
                 @if($anggotaBpd->count() > 0)
                 <div class="flex flex-wrap justify-center gap-8">
                     @foreach($anggotaBpd as $item)
-                    <div class="w-full sm:w-[calc(50%-2rem)] lg:w-[calc(25%-2rem)] max-w-[200px] group text-center">
+                    {{-- TAMBAHAN AOS: fade-up dengan delay bertahap pakai $loop->iteration --}}
+                    <div class="w-full sm:w-[calc(50%-2rem)] lg:w-[calc(25%-2rem)] max-w-[200px] group text-center"
+                         data-aos="fade-up" 
+                         data-aos-delay="{{ $loop->iteration * 100 }}">
                         <div class="w-32 mx-auto mb-4">
                             <div class="aspect-[3/4] rounded-2xl overflow-hidden border-4 border-white shadow-md group-hover:border-desa-gold transition-colors duration-300 bg-gray-100">
                                 @if($item->foto)

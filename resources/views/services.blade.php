@@ -12,16 +12,33 @@
     .syarat-scroll:hover::-webkit-scrollbar-thumb { background: #94a3b8; }
 </style>
 
-<section class="bg-desa-dark text-white pt-32 pb-20 relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-64 h-64 bg-desa-gold/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+<section class="relative text-white pt-32 pb-20 overflow-hidden bg-gray-900">
+    
+    {{-- Latar Belakang Gambar & Overlay --}}
+    <div class="absolute inset-0 z-0">
+        {{-- Ganti 'images/bg.png' dengan gambar yang relevan (misal foto pelayanan balai desa) --}}
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/layanan.jpg') }}');"></div>
+        
+        {{-- Overlay gelap 75% agar teks putih & tombol tetap jelas --}}
+        <div class="absolute inset-0 bg-desa-dark/75"></div>
+    </div>
 
+    {{-- Efek Cahaya Blur --}}
+    <div class="absolute top-0 right-0 w-64 h-64 bg-desa-gold/20 rounded-full -mr-16 -mt-16 blur-3xl z-0"></div>
+
+    {{-- Konten Teks & Tombol --}}
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
-        <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Layanan Desa</h1>
-        <p class="text-gray-300 max-w-2xl mx-auto text-lg font-light">
+        
+        {{-- Tambahan drop-shadow-lg agar teks tajam --}}
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg text-white">Layanan Desa</h1>
+        
+        {{-- Warna teks dicerahkan menjadi gray-200 --}}
+        <p class="text-gray-200 max-w-2xl mx-auto text-lg font-light drop-shadow-md">
             Berbagai layanan administrasi untuk kemudahan warga Desa Banjaran.
         </p>
 
         <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+            {{-- Tombol Utama --}}
             <a href="{{ route('pengajuan.index') }}"
                class="inline-flex items-center gap-2 bg-desa-gold hover:bg-yellow-500 text-desa-dark font-bold px-8 py-4 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transform">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,17 +47,18 @@
                 Ajukan Surat Online
             </a>
 
+            {{-- Tombol Sekunder (Disesuaikan agar lebih kontras dengan gambar) --}}
             <a href="{{ route('pengajuan.cek') }}"
-               class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 hover:-translate-y-0.5 transform">
+               class="inline-flex items-center gap-2 bg-black/30 hover:bg-black/50 backdrop-blur-md border border-white/30 text-white font-bold px-8 py-4 rounded-xl transition-all duration-200 hover:-translate-y-0.5 transform shadow-lg">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                 </svg>
                 Cek Status Surat
             </a>
         </div>
+        
     </div>
 </section>
-
 <section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
 

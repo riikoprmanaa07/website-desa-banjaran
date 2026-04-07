@@ -5,16 +5,32 @@
 @section('content')
 
 {{-- Hero Section --}}
-<section class="bg-desa-dark text-white pt-32 pb-20 relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-64 h-64 bg-desa-gold/10 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-    <div class="absolute bottom-0 left-0 w-48 h-48 bg-desa-gold/5 rounded-full -ml-12 -mb-12 blur-2xl"></div>
+<section class="relative text-white pt-32 pb-20 overflow-hidden bg-gray-900">
+    
+    {{-- Latar Belakang Gambar & Overlay --}}
+    <div class="absolute inset-0 z-0">
+        {{-- Ganti 'images/bg.png' dengan gambar galeri/pemandangan yang pas --}}
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('{{ asset('images/galeri.jpg') }}');"></div>
+        
+        {{-- Overlay gelap 75% --}}
+        <div class="absolute inset-0 bg-desa-dark/75"></div>
+    </div>
 
+    {{-- Efek Cahaya Blur --}}
+    <div class="absolute top-0 right-0 w-64 h-64 bg-desa-gold/20 rounded-full -mr-16 -mt-16 blur-3xl z-0"></div>
+    <div class="absolute bottom-0 left-0 w-48 h-48 bg-desa-gold/10 rounded-full -ml-12 -mb-12 blur-2xl z-0"></div>
+
+    {{-- Konten Teks --}}
     <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10 text-center">
        
-        <h1 class="text-4xl md:text-5xl font-extrabold mb-4"> Galeri Desa Banjaran</h1>
-        <p class="text-gray-400 text-base max-w-xl mx-auto">
-             Dokumentasi momen, kegiatan, dan keindahan Desa Banjaran yang terekam dalam gambar.
+        {{-- Tambahan drop-shadow agar teks lebih tajam --}}
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg text-white">Galeri Desa Banjaran</h1>
+        
+        {{-- Warna teks dicerahkan menjadi gray-200 --}}
+        <p class="text-gray-200 text-base max-w-xl mx-auto drop-shadow-md">
+            Dokumentasi momen, kegiatan, dan keindahan Desa Banjaran yang terekam dalam gambar.
         </p>
+        
     </div>
 </section>
 
